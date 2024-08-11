@@ -23,10 +23,23 @@ func entry(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("====================================", r.URL.Path)
 
-	//if action, ok := GActionRouter[r.URL.Path]; ok {}
+	if action, ok := GActionRouter[r.URL.Path]; ok {
+		if action != nil {
+			action.Execute(w, r)
+		}else {
+			responseError(w,r,http.StatusInternalServerError, "Internal Server Error")
+		}
+	} else {
+		responseError(w,r,http.StatusNotFound, "not found")
+	}
 }
 
 func StartHttp() error {
 	fmt.Println(("Starting HTTPS server..."))
 	return http.ListenAndServeTLS(":443", "conf/original.pem", "conf/privatekey.pem", nil)
+}
+
+func responseError(w http.ResponseWriter, r *http.Request, status int, message string) {
+	w.WriteHeader(status)
+	w.Write([]byte(fmt.Sprintf("%d - %s", status, message)))
 }
