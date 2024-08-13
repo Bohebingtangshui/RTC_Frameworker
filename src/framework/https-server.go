@@ -16,6 +16,11 @@ type AcitonInterface interface {
 
 var GActionRouter map[string]AcitonInterface = make(map[string]AcitonInterface)
 
+func responseError(w http.ResponseWriter, r *http.Request, status int, message string) {
+	w.WriteHeader(status)
+	w.Write([]byte(fmt.Sprintf("%d - %s", status, message)))
+}
+
 func entry(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/favicon.ico" {
 		w.WriteHeader(http.StatusOK)
@@ -24,6 +29,7 @@ func entry(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("====================================", r.URL.Path)
 
 	if action, ok := GActionRouter[r.URL.Path]; ok {
+		r.ParseForm()
 		if action != nil {
 			action.Execute(w, r)
 		}else {
@@ -37,9 +43,4 @@ func entry(w http.ResponseWriter, r *http.Request) {
 func StartHttp() error {
 	fmt.Println(("Starting HTTPS server..."))
 	return http.ListenAndServeTLS(":443", "conf/original.pem", "conf/privatekey.pem", nil)
-}
-
-func responseError(w http.ResponseWriter, r *http.Request, status int, message string) {
-	w.WriteHeader(status)
-	w.Write([]byte(fmt.Sprintf("%d - %s", status, message)))
 }
