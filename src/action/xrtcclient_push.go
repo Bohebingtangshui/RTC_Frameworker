@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"signaling/src/framework"
 )
 type xrtcClientPushAction struct {}
 
@@ -16,10 +17,8 @@ func writeHtmlErrorResponse(w http.ResponseWriter, status int, message string) {
 	w.WriteHeader(status)
 	w.Write([]byte(message))
 }
-func (*xrtcClientPushAction) Execute(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Request method:", r.Method) // 打印请求方法
-    fmt.Println("Request URL path:", r.URL.Path) // 打印请求路径
-
+func (*xrtcClientPushAction) Execute(w http.ResponseWriter, cr *framework.ComRequest) {
+	r:=cr.R
 	err:=r.ParseForm()
 	if err!=nil {
 		fmt.Println("Error parsing data: ", err)
