@@ -5,7 +5,12 @@ import (
 )
 
 func main() {
-	err := framework.StartHttp()
+	err := framework.Init()
+
+	if err != nil {
+		panic(err)
+	}
+	err = framework.StartHttp()
 	if err != nil {
 		panic(err)
 

@@ -32,14 +32,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/golang/glog/internal/logsink"
+	"signaling/src/glog/logsink"
 )
 
 // logDirs lists the candidate directories for new log files.
 var logDirs []string
 
 func SetLogDir(name string) {
-	*logDirs = name
+	logDirs = []string{name}
 }
 
 func SetLogFileName(name string) {
