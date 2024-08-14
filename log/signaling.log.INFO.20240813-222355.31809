@@ -1,7 +1,0 @@
-Log file created at: 2024/08/13 22:23:55
-Running on machine: ZHYServer
-Binary: Built with gc go1.22.6 for linux/amd64
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-I0813 22:23:55.836847   31809 log.go:25] 
-I0813 22:23:58.325804   31809 log.go:25] 
-I0813 22:24:00.346533   31809 log.go:25] 

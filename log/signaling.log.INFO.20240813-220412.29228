@@ -1,5 +1,0 @@
-Log file created at: 2024/08/13 22:04:12
-Running on machine: ZHYServer
-Binary: Built with gc go1.22.6 for linux/amd64
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-I0813 22:04:12.892381   29228 main.go:18] Starting HTTP server11111
