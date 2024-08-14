@@ -14,7 +14,7 @@ func main() {
 		panic(err)
 	}
 
-	err = framework.StartHttp()
+	err = framework.StartHttps()
 	if err != nil {
 		panic(err)
 

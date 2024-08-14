@@ -76,7 +76,7 @@ func entry(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func StartHttp() error {
-	glog.Infof("Start https server on port %d", gconf.httpPort)
-	return http.ListenAndServeTLS(fmt.Sprintf(":%d", gconf.httpPort), "certification/local/fullchain.pem", "certification/local/privkey.pem", nil)
+func StartHttps() error {
+	glog.Infof("Start https server on port %d", gconf.httpsPort)
+	return http.ListenAndServeTLS(fmt.Sprintf(":%d", gconf.httpsPort), gconf.httpsCert, gconf.httpsKey, nil)
 }
