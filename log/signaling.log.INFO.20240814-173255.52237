@@ -1,0 +1,9 @@
+Log file created at: 2024/08/14 17:32:55
+Running on machine: ZHYServer
+Binary: Built with gc go1.22.6 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0814 17:32:55.695096   52237 https-server.go:80] Start https server on port 443
+I0814 17:33:01.322619   52237 log.go:74] logId[2980858523]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36]clientIP[172.19.233.102:54081]realClientIP[172.19.233.102:54081]uid[999]streamName[789]audio[1]video[1]totalCost[0.393ms] 
+I0814 17:33:02.463237   52237 log.go:74] logId[1135541008]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36]clientIP[172.19.233.102:54081]realClientIP[172.19.233.102:54081]uid[999]streamName[789]audio[1]video[1]totalCost[0.427ms] 
+I0814 17:33:03.101531   52237 log.go:74] logId[955722229]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36]clientIP[172.19.233.102:54081]realClientIP[172.19.233.102:54081]uid[999]streamName[789]audio[1]video[1]totalCost[0.286ms] 
+I0814 17:33:51.785110   52237 log.go:74] logId[724809880]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0]clientIP[172.19.233.102:54327]realClientIP[172.19.233.102:54327]audio[1]video[1]uid[999]streamName[789]totalCost[0.372ms] 
