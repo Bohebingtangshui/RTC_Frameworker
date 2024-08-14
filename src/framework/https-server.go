@@ -15,16 +15,14 @@ type AcitonInterface interface {
 	Execute(w http.ResponseWriter, cr *ComRequest)
 }
 
-
-
 var GActionRouter map[string]AcitonInterface = make(map[string]AcitonInterface)
 
-
 type ComRequest struct {
-	R *http.Request
+	R      *http.Request
 	Logger *ComLog
-	LogId uint32
+	LogId  uint32
 }
+
 func responseError(w http.ResponseWriter, r *http.Request, status int, message string) {
 	w.WriteHeader(status)
 	w.Write([]byte(fmt.Sprintf("%d - %s", status, message)))
@@ -49,20 +47,19 @@ func entry(w http.ResponseWriter, r *http.Request) {
 
 	if action, ok := GActionRouter[r.URL.Path]; ok {
 		if action != nil {
-			cr:=&ComRequest{R:r, Logger:&ComLog{}, LogId:GetLogId32()}
-			cr.Logger.AddNotice("logId",strconv.Itoa(int(cr.LogId)))
-			cr.Logger.AddNotice("url",r.URL.Path)
-			cr.Logger.AddNotice("referer",r.Header.Get("Referer"))
-			cr.Logger.AddNotice("cookie",r.Header.Get("cookie"))
-			cr.Logger.AddNotice("user-agent",r.Header.Get("User-Agent"))
-			cr.Logger.AddNotice("clientIP",r.RemoteAddr)
-			cr.Logger.AddNotice("realClientIP",getRealClientIP(r))
-
+			cr := &ComRequest{R: r, Logger: &ComLog{}, LogId: GetLogId32()}
+			cr.Logger.AddNotice("logId", strconv.Itoa(int(cr.LogId)))
+			cr.Logger.AddNotice("url", r.URL.Path)
+			cr.Logger.AddNotice("referer", r.Header.Get("Referer"))
+			cr.Logger.AddNotice("cookie", r.Header.Get("cookie"))
+			cr.Logger.AddNotice("user-agent", r.Header.Get("User-Agent"))
+			cr.Logger.AddNotice("clientIP", r.RemoteAddr)
+			cr.Logger.AddNotice("realClientIP", getRealClientIP(r))
 
 			r.ParseForm()
 
-			for k,v := range r.Form{
-				cr.Logger.AddNotice(k,v[0])
+			for k, v := range r.Form {
+				cr.Logger.AddNotice(k, v[0])
 			}
 
 			cr.Logger.TimeBegin("totalCost")
@@ -70,15 +67,15 @@ func entry(w http.ResponseWriter, r *http.Request) {
 			cr.Logger.TimeEnd("totalCost")
 
 			cr.Logger.Infof("")
-		}else {
-			responseError(w,r,http.StatusInternalServerError, "Internal Server Error")
+		} else {
+			responseError(w, r, http.StatusInternalServerError, "Internal Server Error")
 		}
 	} else {
-		responseError(w,r,http.StatusNotFound, "not found")
+		responseError(w, r, http.StatusNotFound, "not found")
 	}
 }
 
 func StartHttp() error {
 	fmt.Println(("Starting HTTPS server..."))
-	return http.ListenAndServeTLS(":443", "conf/original.pem", "conf/privatekey.pem", nil)
+	return http.ListenAndServeTLS(":443", "certification/original.pem", "certification/privatekey.pem", nil)
 }
