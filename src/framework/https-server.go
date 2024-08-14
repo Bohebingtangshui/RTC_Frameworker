@@ -3,6 +3,7 @@ package framework
 import (
 	"fmt"
 	"net/http"
+	"signaling/src/glog"
 	"strconv"
 )
 
@@ -76,6 +77,6 @@ func entry(w http.ResponseWriter, r *http.Request) {
 }
 
 func StartHttp() error {
-	fmt.Println(("Starting HTTPS server..."))
-	return http.ListenAndServeTLS(":443", "certification/original.pem", "certification/privatekey.pem", nil)
+	glog.Infof("Start https server on port %d", gconf.httpPort)
+	return http.ListenAndServeTLS(fmt.Sprintf(":%d", gconf.httpPort), "certification/original.pem", "certification/privatekey.pem", nil)
 }

@@ -1,0 +1,6 @@
+Log file created at: 2024/08/14 17:00:35
+Running on machine: ZHYServer
+Binary: Built with gc go1.22.6 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0814 17:00:35.049188   48648 https-server.go:80] Start https server on port 443
+I0814 17:00:39.844419   48648 log.go:74] logId[2341309300]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36]clientIP[172.19.233.102:52010]realClientIP[172.19.233.102:52010]video[1]uid[999]streamName[789]audio[1]totalCost[0.449ms] 
