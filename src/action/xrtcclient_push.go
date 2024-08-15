@@ -27,18 +27,18 @@ func (*xrtcClientPushAction) Execute(w http.ResponseWriter, cr *framework.ComReq
 	}
 	fmt.Println("Raw form data:", r.Form)
 
-	request := make(map[string]string)
-	for k, v := range r.Form {
-		request[k] = v[0]
-	}
-	fmt.Println("Received data:", request)
-
 	t, err := template.ParseFiles(framework.GetStaticDir() + "/template/push.tpl")
 	if err != nil {
 		fmt.Println("Error parsing template: ", err)
 		writeHtmlErrorResponse(w, http.StatusNotFound, "404 - Not found")
 		return
 	}
+
+	request := make(map[string]string)
+	for k, v := range r.Form {
+		request[k] = v[0]
+	}
+	fmt.Println("Received data:", request)
 
 	err = t.Execute(w, request)
 	if err != nil {

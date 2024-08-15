@@ -3,13 +3,13 @@ package framework
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"signaling/src/glog"
 	"strconv"
 )
 
 func init() {
 	http.HandleFunc("/", entry)
-
 }
 
 type AcitonInterface interface {
@@ -43,6 +43,7 @@ func entry(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/favicon.ico" {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(""))
+		return
 	}
 	fmt.Println("====================================", r.URL.Path)
 
@@ -74,6 +75,32 @@ func entry(w http.ResponseWriter, r *http.Request) {
 	} else {
 		responseError(w, r, http.StatusNotFound, "not found")
 	}
+}
+
+func RegisterStaticUrl() {
+	info, err := os.Stat(gconf.httpStaticDir)
+	if os.IsNotExist(err) {
+		glog.Infof("Static directory does not exist: %s", gconf.httpStaticDir)
+		return
+	} else if err != nil {
+		glog.Infof("Failed to access static directory: %s, error: %v", gconf.httpStaticDir, err)
+		return
+	}
+
+	if !info.IsDir() {
+		glog.Infof("Static path is not a directory: %s", gconf.httpStaticDir)
+		return
+	}
+
+	fs := http.FileServer(http.Dir(gconf.httpStaticDir))
+	glog.Infof("Register static url %s", gconf.httpStaticPrefix)
+	glog.Infof("Registering static url at prefix %s", gconf.httpStaticPrefix)
+	http.Handle(gconf.httpStaticPrefix, http.StripPrefix(gconf.httpStaticPrefix, fs))
+}
+
+func StartHttp() error {
+	glog.Infof("Start http server on port %d", gconf.httpPort)
+	return http.ListenAndServe(fmt.Sprintf(":%d", gconf.httpPort), nil)
 }
 
 func StartHttps() error {

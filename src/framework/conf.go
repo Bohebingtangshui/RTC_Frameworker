@@ -10,8 +10,9 @@ type FrameworkConf struct {
 	logLevel    string
 	logToStderr bool
 
-	httpPort      int
-	httpStaticDir string
+	httpPort         int
+	httpStaticDir    string
+	httpStaticPrefix string
 
 	httpsPort int
 	httpsCert string
@@ -57,6 +58,11 @@ func loadConf(confFile string) (*FrameworkConf, error) {
 	}
 
 	conf.httpStaticDir, err = configFile.GetValue("http", "httpStaticDir")
+	if err != nil {
+		return nil, err
+	}
+
+	conf.httpStaticPrefix, err = configFile.GetValue("http", "httpStaticPrefix")
 	if err != nil {
 		return nil, err
 	}

@@ -13,11 +13,24 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	framework.RegisterStaticUrl()
 
-	err = framework.StartHttps()
-	if err != nil {
-		panic(err)
+	go StartHttp()
 
+	StartHttps()
+
+}
+
+func StartHttp() {
+	error := framework.StartHttp()
+	if error != nil {
+		panic(error)
 	}
+}
 
+func StartHttps() {
+	error := framework.StartHttps()
+	if error != nil {
+		panic(error)
+	}
 }

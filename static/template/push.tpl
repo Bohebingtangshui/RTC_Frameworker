@@ -60,6 +60,11 @@
     <button id="pushBtn">开始推流</button>
     <button id="stopPushBtn">停止推流</button>
 
+    <script src="/static/js/adapter.js"></script>
+    <script src="/static/js/jquery-2.1.1.min.js"></script>
+    <script src="/static/js/push.js"></script>
+
+
 </body>
 
 </html>
