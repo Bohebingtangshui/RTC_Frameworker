@@ -15,10 +15,10 @@ func NewComError(errNum int, errMsg string) *ComError {
 	return &ComError{mErrNum: errNum, mErrMsg: errMsg}
 }
 
-func (ce *ComError) GetErrNum() int {
+func (ce *ComError) Errno() int {
 	return ce.mErrNum
 }
 
-func (ce *ComError) GetErrMsg() string {
+func (ce *ComError) Error() string {
 	return ce.mErrMsg
 }

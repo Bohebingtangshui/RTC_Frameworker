@@ -24,11 +24,11 @@ type comHttpResp struct {
 }
 
 func writeJsonErrorResponse(cerr *comerrors.ComError, w http.ResponseWriter, cr *framework.ComRequest) {
-	cr.Logger.AddNotice("errNo", strconv.Itoa(cerr.GetErrNum()))
-	cr.Logger.AddNotice("errMsg", cerr.GetErrMsg())
+	cr.Logger.AddNotice("errNo", strconv.Itoa(cerr.Errno()))
+	cr.Logger.AddNotice("errMsg", cerr.Error())
 	cr.Logger.Warningf("rerquest process failed")
 
-	resp := comHttpResp{ErrorNo: cerr.GetErrNum(), ErrorMsg: "process error"}
+	resp := comHttpResp{ErrorNo: cerr.Errno(), ErrorMsg: "process error"}
 
 	buffer := new(bytes.Buffer)
 	json.NewEncoder(buffer).Encode(resp)
