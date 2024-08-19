@@ -1,0 +1,3 @@
+/home/bohebing/Desktop/xrtcserver/rtcbase/out/CMakeFiles/rtcbase.dir
+/home/bohebing/Desktop/xrtcserver/rtcbase/out/CMakeFiles/edit_cache.dir
+/home/bohebing/Desktop/xrtcserver/rtcbase/out/CMakeFiles/rebuild_cache.dir
