@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
+  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/conf.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp",
+  "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp",
+  "output": "CMakeFiles/rtcserver.dir/src/base/conf.cpp.o"
+},
+{
+  "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
+  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/log.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp",
+  "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp",
+  "output": "CMakeFiles/rtcserver.dir/src/base/log.cpp.o"
+},
+{
+  "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
+  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/main.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
+  "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
+  "output": "CMakeFiles/rtcserver.dir/src/main.cpp.o"
+}
+]

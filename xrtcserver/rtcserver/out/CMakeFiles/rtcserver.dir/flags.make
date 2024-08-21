@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src
 
-CXX_FLAGS =   -g -pipe -W -Wall -fPIC -std=gnu++17 -DWEBRTC_POSIX     -DWEBRTC_LINUX
+CXX_FLAGS =   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX
 

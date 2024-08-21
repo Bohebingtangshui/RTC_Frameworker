@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/bohebing/Desktop/xrtcserver/rtcserver
+CMAKE_SOURCE_DIR = /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/bohebing/Desktop/xrtcserver/rtcserver/out
+CMAKE_BINARY_DIR = /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/xrtcserver/rtcserver/out/CMakeFiles /home/bohebing/Desktop/xrtcserver/rtcserver/out//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/xrtcserver/rtcserver/out/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -129,6 +129,54 @@ rtcserver/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/build
 .PHONY : rtcserver/fast
 
+src/base/conf.o: src/base/conf.cpp.o
+.PHONY : src/base/conf.o
+
+# target to build an object file
+src/base/conf.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/conf.cpp.o
+.PHONY : src/base/conf.cpp.o
+
+src/base/conf.i: src/base/conf.cpp.i
+.PHONY : src/base/conf.i
+
+# target to preprocess a source file
+src/base/conf.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/conf.cpp.i
+.PHONY : src/base/conf.cpp.i
+
+src/base/conf.s: src/base/conf.cpp.s
+.PHONY : src/base/conf.s
+
+# target to generate assembly for a file
+src/base/conf.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/conf.cpp.s
+.PHONY : src/base/conf.cpp.s
+
+src/base/log.o: src/base/log.cpp.o
+.PHONY : src/base/log.o
+
+# target to build an object file
+src/base/log.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/log.cpp.o
+.PHONY : src/base/log.cpp.o
+
+src/base/log.i: src/base/log.cpp.i
+.PHONY : src/base/log.i
+
+# target to preprocess a source file
+src/base/log.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/log.cpp.i
+.PHONY : src/base/log.cpp.i
+
+src/base/log.s: src/base/log.cpp.s
+.PHONY : src/base/log.s
+
+# target to generate assembly for a file
+src/base/log.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/log.cpp.s
+.PHONY : src/base/log.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -162,6 +210,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... rtcserver"
+	@echo "... src/base/conf.o"
+	@echo "... src/base/conf.i"
+	@echo "... src/base/conf.s"
+	@echo "... src/base/log.o"
+	@echo "... src/base/log.i"
+	@echo "... src/base/log.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/bohebing/Desktop/xrtcserver/rtcserver
+CMAKE_SOURCE_DIR = /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/bohebing/Desktop/xrtcserver/rtcserver/out
+CMAKE_BINARY_DIR = /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out
 
 # Include any dependencies generated for this target.
 include CMakeFiles/rtcserver.dir/depend.make
@@ -69,31 +69,63 @@ include CMakeFiles/rtcserver.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/rtcserver.dir/flags.make
 
+CMakeFiles/rtcserver.dir/src/base/conf.cpp.o: CMakeFiles/rtcserver.dir/flags.make
+CMakeFiles/rtcserver.dir/src/base/conf.cpp.o: /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp
+CMakeFiles/rtcserver.dir/src/base/conf.cpp.o: CMakeFiles/rtcserver.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rtcserver.dir/src/base/conf.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rtcserver.dir/src/base/conf.cpp.o -MF CMakeFiles/rtcserver.dir/src/base/conf.cpp.o.d -o CMakeFiles/rtcserver.dir/src/base/conf.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp
+
+CMakeFiles/rtcserver.dir/src/base/conf.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtcserver.dir/src/base/conf.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp > CMakeFiles/rtcserver.dir/src/base/conf.cpp.i
+
+CMakeFiles/rtcserver.dir/src/base/conf.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtcserver.dir/src/base/conf.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp -o CMakeFiles/rtcserver.dir/src/base/conf.cpp.s
+
+CMakeFiles/rtcserver.dir/src/base/log.cpp.o: CMakeFiles/rtcserver.dir/flags.make
+CMakeFiles/rtcserver.dir/src/base/log.cpp.o: /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp
+CMakeFiles/rtcserver.dir/src/base/log.cpp.o: CMakeFiles/rtcserver.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/rtcserver.dir/src/base/log.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rtcserver.dir/src/base/log.cpp.o -MF CMakeFiles/rtcserver.dir/src/base/log.cpp.o.d -o CMakeFiles/rtcserver.dir/src/base/log.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp
+
+CMakeFiles/rtcserver.dir/src/base/log.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtcserver.dir/src/base/log.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp > CMakeFiles/rtcserver.dir/src/base/log.cpp.i
+
+CMakeFiles/rtcserver.dir/src/base/log.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtcserver.dir/src/base/log.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp -o CMakeFiles/rtcserver.dir/src/base/log.cpp.s
+
 CMakeFiles/rtcserver.dir/src/main.cpp.o: CMakeFiles/rtcserver.dir/flags.make
-CMakeFiles/rtcserver.dir/src/main.cpp.o: /home/bohebing/Desktop/xrtcserver/rtcserver/src/main.cpp
+CMakeFiles/rtcserver.dir/src/main.cpp.o: /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp
 CMakeFiles/rtcserver.dir/src/main.cpp.o: CMakeFiles/rtcserver.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/bohebing/Desktop/xrtcserver/rtcserver/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rtcserver.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rtcserver.dir/src/main.cpp.o -MF CMakeFiles/rtcserver.dir/src/main.cpp.o.d -o CMakeFiles/rtcserver.dir/src/main.cpp.o -c /home/bohebing/Desktop/xrtcserver/rtcserver/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/rtcserver.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rtcserver.dir/src/main.cpp.o -MF CMakeFiles/rtcserver.dir/src/main.cpp.o.d -o CMakeFiles/rtcserver.dir/src/main.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp
 
 CMakeFiles/rtcserver.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtcserver.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bohebing/Desktop/xrtcserver/rtcserver/src/main.cpp > CMakeFiles/rtcserver.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp > CMakeFiles/rtcserver.dir/src/main.cpp.i
 
 CMakeFiles/rtcserver.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtcserver.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bohebing/Desktop/xrtcserver/rtcserver/src/main.cpp -o CMakeFiles/rtcserver.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp -o CMakeFiles/rtcserver.dir/src/main.cpp.s
 
 # Object files for target rtcserver
 rtcserver_OBJECTS = \
+"CMakeFiles/rtcserver.dir/src/base/conf.cpp.o" \
+"CMakeFiles/rtcserver.dir/src/base/log.cpp.o" \
 "CMakeFiles/rtcserver.dir/src/main.cpp.o"
 
 # External object files for target rtcserver
 rtcserver_EXTERNAL_OBJECTS =
 
+rtcserver: CMakeFiles/rtcserver.dir/src/base/conf.cpp.o
+rtcserver: CMakeFiles/rtcserver.dir/src/base/log.cpp.o
 rtcserver: CMakeFiles/rtcserver.dir/src/main.cpp.o
 rtcserver: CMakeFiles/rtcserver.dir/build.make
 rtcserver: CMakeFiles/rtcserver.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/bohebing/Desktop/xrtcserver/rtcserver/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable rtcserver"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable rtcserver"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rtcserver.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -105,6 +137,6 @@ CMakeFiles/rtcserver.dir/clean:
 .PHONY : CMakeFiles/rtcserver.dir/clean
 
 CMakeFiles/rtcserver.dir/depend:
-	cd /home/bohebing/Desktop/xrtcserver/rtcserver/out && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/bohebing/Desktop/xrtcserver/rtcserver /home/bohebing/Desktop/xrtcserver/rtcserver /home/bohebing/Desktop/xrtcserver/rtcserver/out /home/bohebing/Desktop/xrtcserver/rtcserver/out /home/bohebing/Desktop/xrtcserver/rtcserver/out/CMakeFiles/rtcserver.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/out/CMakeFiles/rtcserver.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/rtcserver.dir/depend
 

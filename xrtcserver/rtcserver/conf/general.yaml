@@ -1,0 +1,6 @@
+log:
+    log_dir: .log
+    log_name: xrtcserver
+    # verbose, debug, info, warning, error, critical
+    log_level: VERBOSE
+    log_to_stderr: false
