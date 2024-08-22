@@ -27,7 +27,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 27,
+				"line" : 28,
 				"parent" : 0
 			},
 			{
@@ -39,13 +39,19 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 29,
+				"line" : 30,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 30,
+				"line" : 31,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 32,
 				"parent" : 0
 			},
 			{
@@ -68,15 +74,15 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src"
 				}
 			],
@@ -85,7 +91,9 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3,
+				4
 			]
 		}
 	],
@@ -154,6 +162,11 @@
 				"role" : "libraries"
 			},
 			{
+				"backtrace" : 5,
+				"fragment" : "-lev",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "-Wl,-Bdynamic",
 				"role" : "libraries"
 			}
@@ -175,7 +188,9 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3,
+				4
 			]
 		}
 	],
@@ -196,7 +211,19 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "src/base/socket.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "src/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/signaling/signaling_server.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

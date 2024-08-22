@@ -2,3 +2,15 @@
 
 2024-08-22 09:37:31 - VERBOSE: [000:000][23040] (src/main.cpp:40): hello world
 
+2024-08-22 12:59:17 - INFO: [000:000][5515] (src/signaling/signaling_server.cpp:26): signaling server conf init success
+
+2024-08-22 12:59:17 - VERBOSE: [000:000][5515] (src/main.cpp:53): hello world
+
+2024-08-22 15:23:18 - INFO: [000:000][7571] (src/signaling/signaling_server.cpp:27): signaling server conf init success
+
+2024-08-22 15:25:49 - INFO: [000:000][8050] (src/signaling/signaling_server.cpp:27): signaling server conf init success
+
+2024-08-22 15:30:36 - INFO: [000:000][8319] (src/signaling/signaling_server.cpp:27): signaling server conf init success
+
+2024-08-22 17:12:37 - INFO: [000:000][20833] (src/signaling/signaling_server.cpp:27): signaling server conf init success
+

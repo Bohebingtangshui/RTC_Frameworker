@@ -1,0 +1,4 @@
+2024-08-22 12:57:53 - INFO: [000:000][5357] (src/signaling/signaling_server.cpp:26): signaling server conf init success
+
+2024-08-22 12:57:53 - VERBOSE: [000:000][5357] (src/main.cpp:53): hello world
+

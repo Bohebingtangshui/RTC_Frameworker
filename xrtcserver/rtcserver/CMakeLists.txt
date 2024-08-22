@@ -22,9 +22,12 @@ link_directories(
 file(GLOB all_src
     "./src/*.cpp"
     "./src/base/*.cpp"
+    "./src/signaling/*.cpp"
 )
 
 add_executable(rtcserver ${all_src})
 
 target_link_libraries(rtcserver libyaml-cpp.a librtcbase.a -lpthread)
 target_link_libraries(rtcserver libabsl_strings.a libabsl_throw_delegate.a)
+target_link_libraries(rtcserver libev.a)
+

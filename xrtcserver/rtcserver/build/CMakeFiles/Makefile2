@@ -81,12 +81,12 @@ clean: CMakeFiles/rtcserver.dir/clean
 CMakeFiles/rtcserver.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles --progress-num=1,2,3,4 "Built target rtcserver"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target rtcserver"
 .PHONY : CMakeFiles/rtcserver.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/rtcserver.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/rtcserver.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles 0
 .PHONY : CMakeFiles/rtcserver.dir/rule

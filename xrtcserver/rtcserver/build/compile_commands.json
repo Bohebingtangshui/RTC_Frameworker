@@ -13,8 +13,20 @@
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
+  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/socket.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.cpp",
+  "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.cpp",
+  "output": "CMakeFiles/rtcserver.dir/src/base/socket.cpp.o"
+},
+{
+  "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
   "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/main.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
+  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.cpp",
+  "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.cpp",
+  "output": "CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o"
 }
 ]
