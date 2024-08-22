@@ -28,7 +28,7 @@ int InitLog(const std::string& log_dir, const std::string& log_level, const std:
 }
 
 int main() {
-    if(InitGeneralConf("../conf/general.yaml") != 0) {
+    if(InitGeneralConf("../rtcserver/conf/general.yaml") != 0) {
         return -1;
     }
     if(InitLog(g_conf->log_dir, g_conf->log_level, g_conf->log_name) != 0) {

@@ -11,7 +11,7 @@ namespace xrtc {
 
 
 xrtc::XrtcLog::XrtcLog(const std::string &log_dir, const std::string &log_level, const std::string &log_name) : 
-    log_dir(log_dir), log_level(log_level), log_name(log_name), _out_file(log_dir+"/"+log_name+".log"), _err_file(log_dir+"/"+log_name+".log.err")
+    log_dir(log_dir), log_level(log_level), log_name(log_name), log_out_file(log_dir+"/"+log_name+".log"), log_err_file(log_dir+"/"+log_name+".log.err")
 {
 }
 
