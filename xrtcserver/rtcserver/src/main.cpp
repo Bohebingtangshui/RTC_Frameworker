@@ -4,6 +4,9 @@
 #include "base/log.hpp"
 #include "rtc_base/logging.h"
 #include "signaling/signaling_server.hpp"
+#include <signal.h>
+
+
 xrtc::GeneralConf* g_conf{nullptr};
 xrtc::XrtcLog* g_log{nullptr};
 xrtc::SignalingServer* g_signaling_server{nullptr};
@@ -36,6 +39,15 @@ int InitSignalingServer(const std::string& conf_file) {
     }
     return 0;
 }
+
+static void process_signal(int sig) {
+    RTC_LOG(LS_INFO)<<"receive signal:"<<sig;
+    if(SIGINT == sig || SIGTERM == sig) {
+        if(g_signaling_server){
+            g_signaling_server->stop();
+        }
+    }
+}
 int main() {
     if(InitGeneralConf("../conf/general.yaml") != 0) {
         return -1;
@@ -44,12 +56,20 @@ int main() {
         std::cerr<<"init log failed"<<std::endl;
         return -1;
     }
+
+    std::cout<<"init log success"<<std::endl;
+    g_log->set_log_to_stderr(g_conf->log_to_stderr);
+
     if(InitSignalingServer("../conf/signaling_server.yaml") != 0) {
         std::cerr<<"init signaling server failed"<<std::endl;
         return -1;
     }
-    std::cout<<"init log success"<<std::endl;
-    g_log->set_log_to_stderr(g_conf->log_to_stderr);
+
+    signal(SIGINT,process_signal);
+    signal(SIGTERM,process_signal);
+
+    g_signaling_server->start();
+    g_signaling_server->join();
 
 
     g_log->join_log_thread();

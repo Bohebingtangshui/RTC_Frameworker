@@ -153,6 +153,30 @@ src/base/conf.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/conf.cpp.s
 .PHONY : src/base/conf.cpp.s
 
+src/base/event_loop.o: src/base/event_loop.cpp.o
+.PHONY : src/base/event_loop.o
+
+# target to build an object file
+src/base/event_loop.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/event_loop.cpp.o
+.PHONY : src/base/event_loop.cpp.o
+
+src/base/event_loop.i: src/base/event_loop.cpp.i
+.PHONY : src/base/event_loop.i
+
+# target to preprocess a source file
+src/base/event_loop.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/event_loop.cpp.i
+.PHONY : src/base/event_loop.cpp.i
+
+src/base/event_loop.s: src/base/event_loop.cpp.s
+.PHONY : src/base/event_loop.s
+
+# target to generate assembly for a file
+src/base/event_loop.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/base/event_loop.cpp.s
+.PHONY : src/base/event_loop.cpp.s
+
 src/base/log.o: src/base/log.cpp.o
 .PHONY : src/base/log.o
 
@@ -261,6 +285,9 @@ help:
 	@echo "... src/base/conf.o"
 	@echo "... src/base/conf.i"
 	@echo "... src/base/conf.s"
+	@echo "... src/base/event_loop.o"
+	@echo "... src/base/event_loop.i"
+	@echo "... src/base/event_loop.s"
 	@echo "... src/base/log.o"
 	@echo "... src/base/log.i"
 	@echo "... src/base/log.s"

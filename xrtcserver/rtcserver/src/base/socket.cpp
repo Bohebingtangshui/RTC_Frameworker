@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include "rtc_base/logging.h"
+#include <errno.h>
 
 int xrtc::create_tcp_server(const std::string &host, int port)
 {
@@ -35,7 +36,7 @@ int xrtc::create_tcp_server(const std::string &host, int port)
 
     ret= bind(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
     if(ret < 0) {
-        RTC_LOG(LS_ERROR)<<"bind failed";
+        RTC_LOG(LS_ERROR)<<"bind failed"<<errno << ", error: " << strerror(errno);;
         close(sockfd);
         return -1;
     }
