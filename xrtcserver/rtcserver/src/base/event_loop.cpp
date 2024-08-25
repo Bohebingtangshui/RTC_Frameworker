@@ -1,5 +1,6 @@
 #include "event_loop.hpp"
 #include "libev/ev.h"
+#include "rtc_base/logging.h"
 #define TRANS_TO_EV_MASK(mask) \
     (((mask) & xrtc::EventLoopFlags::READ ? EV_READ : 0) | ((mask) & xrtc::EventLoopFlags::WRITE ? EV_WRITE : 0))
 
@@ -18,6 +19,7 @@ namespace xrtc {
     }
     void EventLoop::stop()
     {   
+        RTC_LOG(LS_INFO)<<"event loop stop break";
         ev_break(loop_, EVBREAK_ALL);
     }
 

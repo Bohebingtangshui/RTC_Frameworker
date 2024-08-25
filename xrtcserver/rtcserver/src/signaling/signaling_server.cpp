@@ -6,9 +6,11 @@
 #include <netinet/in.h>
 #include "signaling_server.hpp"
 #include <unistd.h>
+#include "signaling_worker.hpp"
+
 
 namespace xrtc {
-    void signaling_server_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data)
+    void signaling_server_recv_notify(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int /*events*/, void* data)
     {
         int msg;
         if(read(fd, &msg, sizeof(msg)) < 0)
@@ -20,17 +22,26 @@ namespace xrtc {
         SignalingServer* signaling_server = static_cast<SignalingServer*>(data);
         signaling_server->_process_notify(msg);
     }
-    void accept_new_conn(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data)
+
+    void accept_new_conn(EventLoop * /*el*/, IOWatcher * /*watcher*/, int fd, int /*events*/, void * data)
     {
-        SignalingServer* signaling_server = static_cast<SignalingServer*>(data);
-        int conn_fd = accept(fd, nullptr, nullptr);
-        if(conn_fd < 0)
+        int cfd;
+        char cip[128];
+        int cport;
+
+        cfd=tcp_accept(fd, cip, &cport);
+        if(cfd == -1)
         {
             RTC_LOG(LS_WARNING)<<"accept new conn failed";
             return;
         }
-        RTC_LOG(LS_INFO)<<"accept new conn success";
+        RTC_LOG(LS_INFO)<<"accept new conn, ip:"<<cip<<", port:"<<cport;
+
+        SignalingServer* signaling_server = static_cast<SignalingServer*>(data);
+        signaling_server->dispatch_conn(cfd);
     }
+
+
 
     SignalingServer::SignalingServer():event_loop_(new EventLoop(this))
     {
@@ -38,6 +49,25 @@ namespace xrtc {
 
     SignalingServer::~SignalingServer()
     {
+        if(event_loop_)
+        {
+            delete event_loop_;
+            event_loop_ = nullptr;
+        }
+        if(_thread)
+        {
+            delete _thread;
+            _thread = nullptr;
+        }
+        for(auto worker : workers_)
+        {
+            if(worker)
+            {
+                delete worker;
+                worker = nullptr;
+            }
+        }
+        workers_.clear();
     }
     int SignalingServer::Init(const std::string &conf_file)
     {
@@ -75,8 +105,26 @@ namespace xrtc {
         event_loop_->start_io_event(_pipe_watcher_, _notify_recv_fd, EventLoopFlags::READ);
 
         _listen_fd = create_tcp_server(signaling_server_conf_.host, signaling_server_conf_.port);
+        if(_listen_fd < 0)
+        {
+            RTC_LOG(LS_WARNING)<<"create tcp server failed";
+            return -1;
+        }
         io_watcher_ = event_loop_->creat_io_event(accept_new_conn,this);
         event_loop_->start_io_event(io_watcher_, _listen_fd, EventLoopFlags::READ);
+
+        // create worker
+        for(int i = 0; i < signaling_server_conf_.worker_num; ++i)
+        {
+            if(create_worker(i)!=0){
+                RTC_LOG(LS_WARNING)<<"create worker failed";
+                return -1;
+            }
+            // Worker* worker = new Worker();
+            // worker->start();
+            // workers_.push_back(worker);
+        }
+
         return 0;
     }
 
@@ -88,17 +136,17 @@ namespace xrtc {
         }
 
 
-        _thread = new std::thread([this](){
+        _thread = new std::thread([=](){
             RTC_LOG(LS_INFO)<<"signaling server start";
             event_loop_->start();
-            RTC_LOG(LS_INFO)<<"signaling server stop";
+            RTC_LOG(LS_INFO)<<"signaling server stop94";
         });
         return true;
     }
 
     void  SignalingServer::stop()
     {
-        notify(SignalingServer::QUIT);
+        notify(SignalingServer::SignalingServerNotifyMsg::QUIT);
     }
 
     void SignalingServer::notify(int msg)
@@ -111,12 +159,15 @@ namespace xrtc {
         }
     }
 
-    int SignalingServer::_process_notify(int msg)
+
+
+    void SignalingServer::_process_notify(int msg)
     {
         switch (msg)
         {
-            case SignalingServer::QUIT:
+            case SignalingServer::SignalingServerNotifyMsg::QUIT:
                 _stop();
+                RTC_LOG(LS_INFO)<<"signaling server quit";
                 break;
             default:
                 RTC_LOG(LS_WARNING)<<"unknow notify msg:"<<msg;
@@ -132,23 +183,67 @@ namespace xrtc {
             return;
         }
         event_loop_->delete_io_event(_pipe_watcher_);
+        RTC_LOG(LS_INFO)<<"signaling server delete_io_event";
         event_loop_->delete_io_event(io_watcher_);
+        RTC_LOG(LS_INFO)<<"signaling server delete_io_event";
         event_loop_->stop();
+        RTC_LOG(LS_INFO)<<"signaling server stop";
         close(_notify_recv_fd);
         close(_notify_send_fd);
         close(_listen_fd);
 
         RTC_LOG(LS_INFO)<<"signaling server stop";
-    }   
+
+        for(auto worker : workers_)
+        {
+            if (worker)
+            {
+                worker->stop();
+                worker->join();
+            }
+        }
+    }
+
+    int SignalingServer::create_worker(int index)
+    {
+        RTC_LOG(LS_INFO)<<"create worker:"<<index;
+        SignalingWorker* worker = new SignalingWorker(index);
+        if(worker->init() != 0)
+        {
+            RTC_LOG(LS_WARNING)<<"worker init failed";
+            return -1;
+        }
+        if(!worker->start())
+        {
+            RTC_LOG(LS_WARNING)<<"worker start failed";
+            return -1;
+        }
+        workers_.emplace_back(worker);
+        return 0;
+    }
 
     void SignalingServer::join()
     {
         if(_thread)
         {
+            RTC_LOG(LS_INFO)<<"signaling server thread true";
             if(_thread->joinable())
             {
+                RTC_LOG(LS_INFO)<<"signaling server thread joinable";
                 _thread->join();
             }
         }
-    }   
+    }
+
+    void SignalingServer::dispatch_conn(int fd)
+    {
+        int index=next_worker_++;
+        if(next_worker_>=workers_.size())
+        {
+            next_worker_=0;
+        }
+        SignalingWorker* worker = workers_[index];
+        worker->notify_new_conn(fd);       
+    } 
+
 }

@@ -17,6 +17,7 @@ enum EventLoopFlags {
 
 class EventLoop {
 public:
+    
     EventLoop(void* owner);
     ~EventLoop();
 
@@ -32,7 +33,6 @@ public:
     void start_timer(Timewatcher* watcher, unsigned int usec);
     void stop_timer(Timewatcher* watcher);
     void delete_timer(Timewatcher* watcher);
-
 
 private:
     struct ev_loop* loop_{nullptr};

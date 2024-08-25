@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include "rtc_base/logging.h"
 #include <errno.h>
+#include <cstring>
+#include <arpa/inet.h>
+#include <unistd.h>
+
 
 int xrtc::create_tcp_server(const std::string &host, int port)
 {
@@ -49,4 +53,41 @@ int xrtc::create_tcp_server(const std::string &host, int port)
     }
 
     return sockfd;
+}
+
+int xrtc::tcp_accept(int fd, char *ip, int *port)
+{
+    struct sockaddr_in client_addr;
+    socklen_t len = sizeof(client_addr);
+    int cfd = generic_accept(fd, (struct sockaddr*)&client_addr, &len);
+    if(cfd==-1){
+        RTC_LOG(LS_ERROR)<<"accept failed";
+        return -1;
+    }
+    if(ip){
+        strcpy(ip, inet_ntoa(client_addr.sin_addr));
+    }
+    if(port){
+        *port = ntohs(client_addr.sin_port);
+    }
+    return 0;
+}
+
+int xrtc::generic_accept(int fd, sockaddr *addr, socklen_t *len)
+{
+    int cfd=-1;
+    while(1){
+        cfd = accept(fd, addr, len);
+        if(cfd==-1){
+            if(errno==EINTR){
+                continue;
+            }else{
+                RTC_LOG(LS_ERROR)<<"accept failed"<<errno<<", error:"<<strerror(errno);
+                return -1;
+            }
+
+        }
+        break;
+    }
+    return cfd;
 }

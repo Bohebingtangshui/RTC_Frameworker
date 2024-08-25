@@ -273,6 +273,30 @@ src/signaling/signaling_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.s
 .PHONY : src/signaling/signaling_server.cpp.s
 
+src/signaling/signaling_worker.o: src/signaling/signaling_worker.cpp.o
+.PHONY : src/signaling/signaling_worker.o
+
+# target to build an object file
+src/signaling/signaling_worker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o
+.PHONY : src/signaling/signaling_worker.cpp.o
+
+src/signaling/signaling_worker.i: src/signaling/signaling_worker.cpp.i
+.PHONY : src/signaling/signaling_worker.i
+
+# target to preprocess a source file
+src/signaling/signaling_worker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.i
+.PHONY : src/signaling/signaling_worker.cpp.i
+
+src/signaling/signaling_worker.s: src/signaling/signaling_worker.cpp.s
+.PHONY : src/signaling/signaling_worker.s
+
+# target to generate assembly for a file
+src/signaling/signaling_worker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtcserver.dir/build.make CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.s
+.PHONY : src/signaling/signaling_worker.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -300,6 +324,9 @@ help:
 	@echo "... src/signaling/signaling_server.o"
 	@echo "... src/signaling/signaling_server.i"
 	@echo "... src/signaling/signaling_server.s"
+	@echo "... src/signaling/signaling_worker.o"
+	@echo "... src/signaling/signaling_worker.i"
+	@echo "... src/signaling/signaling_worker.s"
 .PHONY : help
 
 

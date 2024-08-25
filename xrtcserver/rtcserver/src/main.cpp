@@ -44,6 +44,7 @@ static void process_signal(int sig) {
     RTC_LOG(LS_INFO)<<"receive signal:"<<sig;
     if(SIGINT == sig || SIGTERM == sig) {
         if(g_signaling_server){
+            RTC_LOG(LS_INFO)<<"signal stop signaling server";
             g_signaling_server->stop();
         }
     }

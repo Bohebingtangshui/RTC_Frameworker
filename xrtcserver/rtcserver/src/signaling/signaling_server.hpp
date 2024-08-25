@@ -2,8 +2,9 @@
 #include <string>
 #include "base/event_loop.hpp"
 #include <thread>
+#include <vector>
 namespace xrtc {
-
+class SignalingWorker;
 struct signaling_server_conf
 {
     std::string host;
@@ -14,8 +15,9 @@ struct signaling_server_conf
 
 class SignalingServer {
 public:
-    enum  {
+    enum SignalingServerNotifyMsg {
         QUIT = 0,
+
     };
     SignalingServer();
     ~SignalingServer();
@@ -23,14 +25,19 @@ public:
     bool start();
     void stop();
 
-    void _stop();
+
 
     void join();
 
     void notify(int msg);
-friend void signaling_server_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
+
+    void dispatch_conn(int fd);
+
+    friend void signaling_server_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
 private:
-    int _process_notify(int msg); 
+    void _process_notify(int msg); 
+    void _stop();
+    int create_worker(int index);
 
 private:
     signaling_server_conf signaling_server_conf_;
@@ -43,6 +50,10 @@ private:
     int _notify_send_fd{-1};
 
     int _listen_fd{-1};
+
+    std::vector<SignalingWorker*> workers_;
+
+    int next_worker_{0};
 
 
 };
