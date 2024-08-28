@@ -381,4 +381,5 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_worker.hpp
+ /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_worker.hpp \
+ /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src/base/Lock_Free_Queue.hpp

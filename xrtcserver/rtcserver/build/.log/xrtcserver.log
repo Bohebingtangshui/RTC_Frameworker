@@ -1,0 +1,14 @@
+2024-08-28 12:46:18 - INFO: [000:000][12547] (src/signaling/signaling_server.cpp:82): signaling server options:
+host: 127.0.0.1
+port: 9000
+worker_num: 2
+connection_timeout: 5000
+2024-08-28 12:46:18 - INFO: [000:000][12547] (src/signaling/signaling_server.cpp:88): signaling server conf init success
+2024-08-28 12:46:18 - INFO: [000:000][12547] (src/signaling/signaling_server.cpp:209): create worker:0
+2024-08-28 12:46:18 - INFO: [000:000][12547] (src/signaling/signaling_server.cpp:209): create worker:1
+2024-08-28 12:46:18 - INFO: [000:000][12549] (src/signaling/signaling_worker.cpp:54): signaling worker start, worker id:0
+2024-08-28 12:46:18 - INFO: [000:000][12547] (src/signaling/signaling_server.cpp:229): signaling server thread true
+2024-08-28 12:46:18 - INFO: [000:000][12547] (src/signaling/signaling_server.cpp:232): signaling server thread joinable
+2024-08-28 12:46:18 - INFO: [000:000][12550] (src/signaling/signaling_worker.cpp:54): signaling worker start, worker id:1
+2024-08-28 12:46:18 - INFO: [000:000][12551] (src/signaling/signaling_server.cpp:139): signaling server event loop run
+

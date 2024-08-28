@@ -2,6 +2,8 @@
 
 #include <string>
 #include "libev/ev.h"
+
+struct ev_loop;
 namespace xrtc {
 
 class EventLoop;
@@ -10,13 +12,14 @@ class Timewatcher;
 typedef void (*io_cb_t)(EventLoop* el, IOWatcher* watcher, int fd, int events,void* data);
 typedef void (*time_cb_t)(EventLoop* el,Timewatcher* watcher, void* data);
 
-enum EventLoopFlags {
-    READ = 0x1,
-    WRITE = 0x2,
-};
+
 
 class EventLoop {
 public:
+    enum  {
+        READ = 0x1,
+        WRITE = 0x2,
+    };
     
     EventLoop(void* owner);
     ~EventLoop();

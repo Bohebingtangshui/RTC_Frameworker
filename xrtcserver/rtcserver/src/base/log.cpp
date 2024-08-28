@@ -11,18 +11,18 @@ namespace xrtc {
 
 
 xrtc::XrtcLog::XrtcLog(const std::string &log_dir, const std::string &log_level, const std::string &log_name) : 
-    log_dir(log_dir), log_level(log_level), log_name(log_name), log_out_file(log_dir+"/"+log_name+".log"), log_err_file(log_dir+"/"+log_name+".log.err")
+    log_dir(log_dir), 
+    log_level(log_level), 
+    log_name(log_name), 
+    log_out_file(log_dir+"/"+log_name+".log"), 
+    log_err_file(log_dir+"/"+log_name+".log.err")
 {
 }
 
 xrtc::XrtcLog::~XrtcLog() {
     stop_log_thread();
-    if(_out_file.is_open()){
-        _out_file.close();
-    }
-    if(_err_file.is_open()){
-        _err_file.close();
-    }
+    _out_file.close();
+    _err_file.close();
 }
 
 static rtc::LoggingSeverity GetLogSeverity(const std::string &log_level)
@@ -89,33 +89,53 @@ bool xrtc::XrtcLog::start_log_thread(){
 
     _log_thread_running = true;
     _log_thread = new std::thread([=](){
+        struct stat st;
+        std::stringstream ss;
         while(_log_thread_running){
-            struct stat st;
-            if(stat("log_dir.c_str()", &st)<0){
+            if(stat(log_out_file.c_str(), &st)<0){
                 _out_file.close();
                 _out_file.open(log_out_file, std::ios::app);
             }
 
-            if(stat("log_err_file.c_str()", &st)<0){
+            if(stat(log_err_file.c_str(), &st)<0){
                 _err_file.close();
                 _err_file.open(log_err_file, std::ios::app);
             }
+            bool write_log = false;
             {
                 std::unique_lock<std::mutex> lock(_log_mutex);
-                while(!_log_queue.empty()){
-                    _out_file<<_log_queue.front()<<std::endl;
-                    _log_queue.pop();
+                if(!_log_queue.empty()){
+                    write_log = true;
+                    while(!_log_queue.empty()){
+                        ss<<_log_queue.front();
+                        _log_queue.pop();
+                    }
                 }
+            }
+            if(write_log){
+                _out_file<<ss.str()<<std::endl;
                 _out_file.flush();
             }
+            ss.str("");
+
+            bool write_err = false;
             {
                 std::unique_lock<std::mutex> lock(_err_mutex);
-                while(!_err_queue.empty()){
-                    _err_file<<_err_queue.front()<<std::endl;
-                    _err_queue.pop();
+                if(!_err_queue.empty()){
+                    write_err = true;
+                    while(!_err_queue.empty()){
+                        ss<<_err_queue.front();
+                        _err_queue.pop();
+                    }
                 }
+            }
+
+            if(write_err){
+                _err_file<<ss.str()<<std::endl;
                 _err_file.flush();
             }
+
+            ss.str("");
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
             
 
@@ -171,7 +191,7 @@ void xrtc::XrtcLog::OnLogMessage(const std::string &message,rtc::LoggingSeverity
     }
 }
 
-void xrtc::XrtcLog::OnLogMessage(const std::string& message){
+void xrtc::XrtcLog::OnLogMessage(const std::string& /*message*/){
 
 }
 }

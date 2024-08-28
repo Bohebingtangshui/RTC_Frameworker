@@ -15,7 +15,7 @@ namespace xrtc {
         int msg;
         if(read(fd, &msg, sizeof(msg)) < 0)
         {
-            RTC_LOG(LS_WARNING)<<"read notify from pipe failed";
+            RTC_LOG(LS_WARNING) << "read from pipe error: " << strerror(errno) << ", errno: " << errno;
             return;
         }
         RTC_LOG(LS_INFO)<<"recv notify msg:"<<msg;
@@ -79,15 +79,17 @@ namespace xrtc {
         try
         {
             YAML::Node conf = YAML::LoadFile(conf_file);
+            RTC_LOG(LS_INFO) << "signaling server options:\n" << conf;
+
             signaling_server_conf_.host = conf["host"].as<std::string>();
             signaling_server_conf_.port = conf["port"].as<int>();
             signaling_server_conf_.worker_num = conf["worker_num"].as<int>();
             signaling_server_conf_.connection_timeout = conf["connection_timeout"].as<int>();
             RTC_LOG(LS_INFO)<<"signaling server conf init success";
         }
-        catch(const std::exception& e)
+        catch(YAML::Exception  e)
         {
-            RTC_LOG(LS_WARNING)<<"signaling server conf init failed";
+            RTC_LOG(LS_WARNING) << "catch a YAML exception, line:" << e.mark.line + 1 << ", column: " << e.mark.column + 1 << ", error: " << e.msg;
             return -1;
         }
 
@@ -102,7 +104,7 @@ namespace xrtc {
         _notify_send_fd = fds[1];
         //add recv fd to event loop
         _pipe_watcher_ = event_loop_->creat_io_event(signaling_server_recv_notify, this);
-        event_loop_->start_io_event(_pipe_watcher_, _notify_recv_fd, EventLoopFlags::READ);
+        event_loop_->start_io_event(_pipe_watcher_, _notify_recv_fd, EventLoop::READ);
 
         _listen_fd = create_tcp_server(signaling_server_conf_.host, signaling_server_conf_.port);
         if(_listen_fd < 0)
@@ -111,7 +113,7 @@ namespace xrtc {
             return -1;
         }
         io_watcher_ = event_loop_->creat_io_event(accept_new_conn,this);
-        event_loop_->start_io_event(io_watcher_, _listen_fd, EventLoopFlags::READ);
+        event_loop_->start_io_event(io_watcher_, _listen_fd, EventLoop::READ);
 
         // create worker
         for(int i = 0; i < signaling_server_conf_.worker_num; ++i)
@@ -120,9 +122,6 @@ namespace xrtc {
                 RTC_LOG(LS_WARNING)<<"create worker failed";
                 return -1;
             }
-            // Worker* worker = new Worker();
-            // worker->start();
-            // workers_.push_back(worker);
         }
 
         return 0;
@@ -137,26 +136,27 @@ namespace xrtc {
 
 
         _thread = new std::thread([=](){
-            RTC_LOG(LS_INFO)<<"signaling server start";
+            RTC_LOG(LS_INFO)<<"signaling server event loop run";
             event_loop_->start();
-            RTC_LOG(LS_INFO)<<"signaling server stop94";
+            RTC_LOG(LS_INFO)<<"signaling server event loop stop";
         });
         return true;
     }
 
     void  SignalingServer::stop()
     {
-        notify(SignalingServer::SignalingServerNotifyMsg::QUIT);
+        notify(SignalingServer::QUIT);
     }
 
-    void SignalingServer::notify(int msg)
+    int SignalingServer::notify(int msg)
     {
         int written = write(_notify_send_fd, &msg, sizeof(msg));
         if(written < 0)
         {
             RTC_LOG(LS_WARNING)<<"write notify failed";
-            return;
+            return -1;
         }
+        return written == sizeof(int) ? 0 : -1;
     }
 
 
@@ -165,7 +165,7 @@ namespace xrtc {
     {
         switch (msg)
         {
-            case SignalingServer::SignalingServerNotifyMsg::QUIT:
+            case QUIT:
                 _stop();
                 RTC_LOG(LS_INFO)<<"signaling server quit";
                 break;
@@ -204,10 +204,10 @@ namespace xrtc {
         }
     }
 
-    int SignalingServer::create_worker(int index)
+    int SignalingServer::create_worker(int worker_id)
     {
-        RTC_LOG(LS_INFO)<<"create worker:"<<index;
-        SignalingWorker* worker = new SignalingWorker(index);
+        RTC_LOG(LS_INFO)<<"create worker:"<<worker_id;
+        SignalingWorker* worker = new SignalingWorker(worker_id);
         if(worker->init() != 0)
         {
             RTC_LOG(LS_WARNING)<<"worker init failed";

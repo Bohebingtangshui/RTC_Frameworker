@@ -12,6 +12,10 @@ xrtc::XrtcLog* g_log{nullptr};
 xrtc::SignalingServer* g_signaling_server{nullptr};
 
 int InitGeneralConf(const std::string& conf_file) {
+    if(conf_file.empty()) {
+        std::cerr<<"conf file is empty"<<std::endl;
+        return -1;
+    }
     g_conf = new xrtc::GeneralConf();
     if(xrtc::Load_Genaral_Conf(conf_file, *g_conf) != 0) {
         std::cerr<< "load general conf failed"<<std::endl;
@@ -73,11 +77,5 @@ int main() {
     g_signaling_server->join();
 
 
-    g_log->join_log_thread();
-
-    g_log->stop_log_thread();
-
-    delete g_log;
-    delete g_conf;
     return 0;
 }

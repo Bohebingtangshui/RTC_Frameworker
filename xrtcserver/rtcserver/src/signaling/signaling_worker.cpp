@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <cstring>
 #include <errno.h>
+#include "base/Lock_Free_Queue.hpp"
 namespace xrtc
 {
 SignalingWorker::SignalingWorker(int worker_id):worker_id_(worker_id),event_loop_(new EventLoop(this))
@@ -25,7 +26,7 @@ void signaling_worker_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int
     }
     RTC_LOG(LS_INFO)<<"recv notify msg:"<<msg;
     SignalingWorker* signaling_worker = static_cast<SignalingWorker*>(data);
-    signaling_worker->notify(msg);
+    signaling_worker->process_notify(msg);
 }
 
 int SignalingWorker::init(){
@@ -38,7 +39,7 @@ int SignalingWorker::init(){
     notify_recv_fd_ = fds[0];
     notify_send_fd_ = fds[1];
     pipe_watcher_ = event_loop_->creat_io_event(signaling_worker_recv_notify, this);
-    event_loop_->start_io_event(pipe_watcher_, notify_recv_fd_, xrtc::EventLoopFlags::READ);
+    event_loop_->start_io_event(pipe_watcher_, notify_recv_fd_, EventLoop::READ);
     return 0;
 }
 
@@ -59,12 +60,12 @@ bool SignalingWorker::start()
 
 void SignalingWorker::stop()
 {
-    notify(SignalingWorkerNotifyMsg::QUIT);
+    notify(SignalingWorker::QUIT);
 }
 
 int SignalingWorker::notify(int msg)
 {
-    int written = write(notify_send_fd_, &msg, sizeof(msg));
+    int written = write(notify_send_fd_, &msg, sizeof(int));
     return written==sizeof(msg) ? 0 : -1;
 }
 
@@ -72,9 +73,16 @@ void SignalingWorker::process_notify(int msg)
 {
     switch (msg)
     {
-        case SignalingWorkerNotifyMsg::QUIT:
+        case QUIT:
             _stop();
             RTC_LOG(LS_INFO)<<"signaling worker quit, worker id:"<<worker_id_;
+            break;
+        case NEW_CONN:
+            int fd;
+            if(q_conn_.consume(&fd))
+            {
+                new_conn(fd);
+            }
             break;
         default:
             RTC_LOG(LS_WARNING)<<"unknow notify msg:"<<msg;
@@ -103,12 +111,17 @@ void SignalingWorker::join()
     {
         thread_->join();
     }
-}
+}  
 
 int SignalingWorker::notify_new_conn(int fd)
 {
-    
-    return 0;
+    q_conn_.produce(fd);
+    return notify(SignalingWorker::NEW_CONN);
+}
+
+void SignalingWorker::new_conn(int fd)
+{   
+    RTC_LOG(LS_INFO)<<"new conn, worker id:"<<worker_id_<<", fd:"<<fd;
 }
 
 } // namespace xrtc

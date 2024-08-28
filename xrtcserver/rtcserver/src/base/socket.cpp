@@ -15,15 +15,16 @@
 int xrtc::create_tcp_server(const std::string &host, int port)
 {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if(sockfd < 0) {
-        RTC_LOG(LS_ERROR)<<"socket init failed";
+    if(sockfd ==-1) {
+        RTC_LOG(LS_WARNING)<<"socket init failed";
         return -1;
     }
 
     int on=1;
     int ret= setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
-    if(ret < 0) {
-        RTC_LOG(LS_ERROR)<<"setsockopt failed";
+    if(ret ==-1) {
+        RTC_LOG(LS_WARNING) << "setsockopt SO_REUSEADDR error, errno: " << errno
+            << ", error: " << strerror(errno);
         return -1;
     }
 
@@ -39,15 +40,15 @@ int xrtc::create_tcp_server(const std::string &host, int port)
     }
 
     ret= bind(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
-    if(ret < 0) {
-        RTC_LOG(LS_ERROR)<<"bind failed"<<errno << ", error: " << strerror(errno);;
+    if(ret == -1) {
+        RTC_LOG(LS_WARNING) << "bind error, errno: " << errno << ", error: " << strerror(errno);
         close(sockfd);
         return -1;
     }
 
     ret= listen(sockfd, 4095);
-    if(ret < 0) {
-        RTC_LOG(LS_ERROR)<<"listen failed";
+    if(ret == -1) {
+        RTC_LOG(LS_WARNING) << "listen error, errno: " << errno << ", error: " << strerror(errno);
         close(sockfd);
         return -1;
     }
@@ -70,7 +71,7 @@ int xrtc::tcp_accept(int fd, char *ip, int *port)
     if(port){
         *port = ntohs(client_addr.sin_port);
     }
-    return 0;
+    return cfd;
 }
 
 int xrtc::generic_accept(int fd, sockaddr *addr, socklen_t *len)
@@ -82,7 +83,7 @@ int xrtc::generic_accept(int fd, sockaddr *addr, socklen_t *len)
             if(errno==EINTR){
                 continue;
             }else{
-                RTC_LOG(LS_ERROR)<<"accept failed"<<errno<<", error:"<<strerror(errno);
+                RTC_LOG(LS_WARNING) << "tcp accept error: " << strerror(errno) << ", errno: " << errno;
                 return -1;
             }
 

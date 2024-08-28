@@ -15,29 +15,26 @@ struct signaling_server_conf
 
 class SignalingServer {
 public:
-    enum SignalingServerNotifyMsg {
+    enum  {
         QUIT = 0,
 
     };
     SignalingServer();
     ~SignalingServer();
+
     int Init(const std::string& conf_file);
     bool start();
     void stop();
-
-
-
     void join();
-
-    void notify(int msg);
-
-    void dispatch_conn(int fd);
+    int notify(int msg);
 
     friend void signaling_server_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
+    friend void accept_new_conn(EventLoop * el, IOWatcher * watcher, int fd, int events, void * data);
 private:
     void _process_notify(int msg); 
     void _stop();
-    int create_worker(int index);
+    int create_worker(int worker_id);
+    void dispatch_conn(int fd);
 
 private:
     signaling_server_conf signaling_server_conf_;

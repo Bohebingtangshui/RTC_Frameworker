@@ -1,11 +1,12 @@
 #pragma once
 #include "base/event_loop.hpp"
 #include <thread>
+#include "base/Lock_Free_Queue.hpp"
 namespace xrtc {   
     class SignalingWorker
     {
     public:
-        enum SignalingWorkerNotifyMsg {
+        enum  {
             QUIT = 0,
             NEW_CONN = 1,
         };
@@ -15,12 +16,17 @@ namespace xrtc {
         bool start();
         void stop();
         int notify(int msg);
-friend void signaling_worker_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
-        void process_notify(int msg);
 
-        void _stop();
+        friend void signaling_worker_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
         void join();
         int notify_new_conn(int fd);
+        
+
+    private:
+        void process_notify(int msg);
+        void _stop();
+        void new_conn(int fd);
+
 
     private:
         int worker_id_;
@@ -31,5 +37,6 @@ friend void signaling_worker_recv_notify(EventLoop* el, IOWatcher* watcher, int 
         int notify_send_fd_{-1};
 
         std::thread* thread_{nullptr};
+        LockFreeQueue<int> q_conn_;
     };
 }
