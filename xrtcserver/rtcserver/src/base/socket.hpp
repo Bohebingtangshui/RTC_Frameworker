@@ -9,4 +9,5 @@ namespace xrtc {
     int sock_set_nonblock(int fd);
     int sock_set_nodelay(int fd);
     int sock_peer_to_str(int fd, std::string& host, int& port);
+    int sock_read_data(int fd, char* buf, int len);
 }

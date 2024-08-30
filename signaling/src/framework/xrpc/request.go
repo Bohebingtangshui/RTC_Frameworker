@@ -29,3 +29,12 @@ func NewRequest(body io.Reader, logId uint32) *Request {
 	return req
 
 }
+
+func (r *Request) Write(w io.Writer) (int, error) {
+	if n, err := r.Header.Write(w); err != nil {
+		return n, err
+	}
+
+	written, err := io.Copy(w, r.Body)
+	return int(written), err
+}

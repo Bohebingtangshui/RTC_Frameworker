@@ -272,6 +272,12 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o: \
   /usr/include/x86_64-linux-gnu/bits/semaphore.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src/base/Lock_Free_Queue.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.hpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src/base/xhead.hpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src/rtc_base/sds.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_list.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_arg.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg___va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_copy.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/vector \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_uninitialized.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h \

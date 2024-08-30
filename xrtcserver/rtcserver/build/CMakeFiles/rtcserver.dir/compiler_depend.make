@@ -1796,6 +1796,7 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o: /home/bohebing/De
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/constructor_magic.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/logging.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/numerics/safe_compare.h \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/sds.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/string_encode.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/string_to_number.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/strings/string_builder.h \
@@ -1805,6 +1806,7 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o: /home/bohebing/De
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/Lock_Free_Queue.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/event_loop.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.hpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/xhead.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/absl/base/attributes.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/absl/base/config.h \
@@ -1855,6 +1857,7 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o: /home/bohebing/De
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/yaml-cpp/yaml.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_worker.hpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.hpp \
   /usr/include/c++/13/algorithm \
   /usr/include/c++/13/any \
   /usr/include/c++/13/array \
@@ -2241,6 +2244,10 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o: /home/bohebing/De
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/include/x86_64-linux-gnu/sys/ucontext.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg___va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_arg.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_list.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_max_align_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_null.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_nullptr_t.h \
@@ -2260,6 +2267,7 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o: /home/bohebing/De
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/constructor_magic.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/logging.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/numerics/safe_compare.h \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/sds.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/string_encode.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/string_to_number.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/strings/string_builder.h \
@@ -2269,6 +2277,7 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o: /home/bohebing/De
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/Lock_Free_Queue.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/event_loop.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.hpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/xhead.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/absl/base/attributes.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/absl/base/config.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/absl/base/internal/identity.h \
@@ -2616,6 +2625,10 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o: /home/bohebing/De
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/include/x86_64-linux-gnu/sys/ucontext.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg___va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_arg.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_list.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_max_align_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_null.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_nullptr_t.h \
@@ -2629,7 +2642,9 @@ CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o: /home/bohebing/De
   /usr/lib/llvm-18/lib/clang/18/include/stdint.h
 
 CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.cpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/sds.h \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/event_loop.hpp \
+  /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/xhead.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.hpp \
   /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/libev/ev.h \
   /usr/include/c++/13/backward/binders.h \
@@ -2685,6 +2700,7 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
   /usr/include/c++/13/compare \
   /usr/include/c++/13/concepts \
   /usr/include/c++/13/cstddef \
+  /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
   /usr/include/c++/13/cstdlib \
   /usr/include/c++/13/cwchar \
@@ -2729,6 +2745,7 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
   /usr/include/locale.h \
   /usr/include/signal.h \
   /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
   /usr/include/string.h \
@@ -2775,6 +2792,8 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
   /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
   /usr/include/x86_64-linux-gnu/bits/statx.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
   /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
@@ -2828,6 +2847,10 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/include/x86_64-linux-gnu/sys/ucontext.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg___va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_arg.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_copy.h \
+  /usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_list.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_max_align_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_null.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_nullptr_t.h \
@@ -2836,10 +2859,19 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_size_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_wchar_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/stdarg.h \
-  /usr/lib/llvm-18/lib/clang/18/include/stddef.h
+  /usr/lib/llvm-18/lib/clang/18/include/stddef.h \
+  /usr/lib/llvm-18/lib/clang/18/include/stdint.h
 
 
 /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.cpp:
+
+/usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_list.h:
+
+/usr/lib/llvm-18/lib/clang/18/include/__stdarg___va_copy.h:
+
+/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/xhead.hpp:
+
+/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcbase/src/rtc_base/sds.h:
 
 /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp:
 
@@ -3535,6 +3567,8 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
 
 /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.hpp:
 
+/usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_arg.h:
+
 /usr/include/c++/13/bits/align.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
@@ -3718,6 +3752,8 @@ CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o: /home/bohebing/Desk
 /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/thirdparty/include/yaml-cpp/node/detail/iterator.h:
 
 /usr/include/features-time64.h:
+
+/usr/lib/llvm-18/lib/clang/18/include/__stdarg_va_copy.h:
 
 /usr/include/c++/13/tr1/ell_integral.tcc:
 

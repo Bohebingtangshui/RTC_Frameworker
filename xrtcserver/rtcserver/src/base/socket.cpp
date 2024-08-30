@@ -140,3 +140,18 @@ int xrtc::sock_peer_to_str(int fd, std::string& host, int& port){
 
     return 0;
 }
+
+int xrtc::sock_read_data(int fd, char* buf, int len){
+    int nread = read(fd, buf, len);
+    if(nread==-1){
+        if(errno==EAGAIN){
+            nread=0;
+        }else {
+            RTC_LOG(LS_WARNING) << "sock read error, errno: " << errno << ", error: " << strerror(errno);
+        }
+    }else if (nread==0) {
+        RTC_LOG(LS_WARNING) << "connection closed, fd: " << fd ;
+    }
+    return nread;
+}
+

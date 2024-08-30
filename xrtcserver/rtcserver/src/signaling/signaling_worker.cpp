@@ -123,6 +123,29 @@ int SignalingWorker::notify_new_conn(int fd)
 
 void SignalingWorker::read_query(int fd){
     RTC_LOG(LS_INFO)<<"signaling worker "<<worker_id_<<" read query from fd:"<<fd ;
+    if(fd<0 || (size_t)fd>=conns_.size() || !conns_[fd])
+    {
+        RTC_LOG(LS_WARNING)<<"invalid fd:"<<fd;
+        return;
+    }
+    TcpConnection* conn = conns_[fd];
+    int nread=0;
+    int read_len=conn->bytes_expected;
+    int qb_len=sdslen(conn->querybuf);
+
+    conn->querybuf = sdsMakeRoomFor(conn->querybuf, read_len);
+    nread = sock_read_data(fd,conn->querybuf+qb_len,read_len);
+    RTC_LOG(LS_INFO)<<"read query from fd:"<<fd<<", nread:"<<nread;
+    if(nread<=0)
+    {
+        RTC_LOG(LS_WARNING)<<"read query failed, fd:"<<fd<<", error:"<<strerror(errno)<<", errno:"<<errno;
+        // delete conn;
+        // conns_[fd]=nullptr;
+        return;
+    }else if(nread>0){
+        sdsIncrLen(conn->querybuf, nread);
+    }
+    
 
 }
 

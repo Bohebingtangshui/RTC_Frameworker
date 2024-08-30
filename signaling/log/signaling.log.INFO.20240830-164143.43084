@@ -1,0 +1,8 @@
+Log file created at: 2024/08/30 16:41:43
+Running on machine: ZHYServer
+Binary: Built with gc go1.23.0 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0830 16:41:43.332289   43084 https-server.go:96] Register static url /static/
+I0830 16:41:43.332516   43084 https-server.go:97] Registering static url at prefix /static/
+I0830 16:41:43.332563   43084 https-server.go:107] Start https server on port 443
+I0830 16:41:43.332692   43084 https-server.go:102] Start http server on port 80
