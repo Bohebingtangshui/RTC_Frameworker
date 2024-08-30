@@ -238,7 +238,7 @@ namespace xrtc {
     void SignalingServer::dispatch_conn(int fd)
     {
         int index=next_worker_++;
-        if(next_worker_>=workers_.size())
+        if(size_t(next_worker_)>=workers_.size())
         {
             next_worker_=0;
         }

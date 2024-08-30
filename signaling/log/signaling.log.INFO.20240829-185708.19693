@@ -1,0 +1,12 @@
+Log file created at: 2024/08/29 18:57:08
+Running on machine: ZHYServer
+Binary: Built with gc go1.23.0 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0829 18:57:08.493722   19693 https-server.go:96] Register static url /static/
+I0829 18:57:08.493983   19693 https-server.go:97] Registering static url at prefix /static/
+I0829 18:57:08.494020   19693 https-server.go:107] Start https server on port 443
+I0829 18:57:08.494121   19693 https-server.go:102] Start http server on port 80
+I0829 18:57:18.888732   19693 log.go:74] logId[1436590835]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36]clientIP[172.19.233.102:7823]realClientIP[172.19.233.102:7823]streamName[789]audio[1]video[1]uid[999]totalCost[0.481ms] 
+I0829 18:57:25.031102   19693 log.go:74] logId[1391842858]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36]clientIP[172.19.233.102:7823]realClientIP[172.19.233.102:7823]uid[999]streamName[789]audio[1]video[1]totalCost[0.419ms] 
+I0829 18:58:31.966637   19693 log.go:74] logId[715162878]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36]clientIP[172.19.233.102:7823]realClientIP[172.19.233.102:7823]audio[1]video[1]uid[999]streamName[789]totalCost[0.404ms] 
+I0829 18:58:39.680280   19693 log.go:74] logId[1986066269]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36]clientIP[172.19.233.102:7823]realClientIP[172.19.233.102:7823]audio[1]video[1]uid[999]streamName[789]totalCost[0.437ms] 

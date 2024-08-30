@@ -5,6 +5,8 @@
 #include <cstring>
 #include <errno.h>
 #include "base/Lock_Free_Queue.hpp"
+#include "base/socket.hpp"
+#include "tcp_connection.hpp"
 namespace xrtc
 {
 SignalingWorker::SignalingWorker(int worker_id):worker_id_(worker_id),event_loop_(new EventLoop(this))
@@ -16,7 +18,7 @@ SignalingWorker::~SignalingWorker()
 {
 }
 
-void signaling_worker_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data)
+void signaling_worker_recv_notify(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int /*events*/, void* data)
 {
     int msg;
     if(read(fd, &msg, sizeof(msg)) != sizeof(int))
@@ -119,9 +121,44 @@ int SignalingWorker::notify_new_conn(int fd)
     return notify(SignalingWorker::NEW_CONN);
 }
 
+void SignalingWorker::read_query(int fd){
+    RTC_LOG(LS_INFO)<<"signaling worker "<<worker_id_<<" read query from fd:"<<fd ;
+
+}
+
+void conn_io_cb(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int events, void* data)
+{
+    SignalingWorker* worker = static_cast<SignalingWorker*>(data);
+    if(events & EventLoop::READ)
+    {
+        worker->read_query(fd);
+    }
+}
+
 void SignalingWorker::new_conn(int fd)
 {   
     RTC_LOG(LS_INFO)<<"new conn, worker id:"<<worker_id_<<", fd:"<<fd;
+    if(fd<0){
+        RTC_LOG(LS_WARNING)<<"invalid fd:"<<fd;
+        return;
+    }
+
+    sock_set_nonblock(fd);
+    sock_set_nodelay(fd);
+
+    TcpConnection* conn = new TcpConnection(fd);
+    sock_peer_to_str(fd, conn->host_, conn->port_);
+
+    conn->io_watcher_ = event_loop_->creat_io_event(conn_io_cb, this);
+    event_loop_->start_io_event(conn->io_watcher_, fd, EventLoop::READ);
+
+    if(fd>=conns_.size())
+    {
+        conns_.resize(fd+1, nullptr);
+    }
+    conns_[fd]=conn;
+
+    
 }
 
 } // namespace xrtc

@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o.d"
   "CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o"
   "CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o.d"
+  "CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o"
+  "CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o.d"
   "rtcserver"
   "rtcserver.pdb"
 )

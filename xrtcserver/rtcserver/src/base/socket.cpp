@@ -10,6 +10,8 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <netinet/tcp.h>
 
 
 int xrtc::create_tcp_server(const std::string &host, int port)
@@ -91,4 +93,50 @@ int xrtc::generic_accept(int fd, sockaddr *addr, socklen_t *len)
         break;
     }
     return cfd;
+}
+
+int xrtc::sock_set_nonblock(int fd)
+{
+    int flags = fcntl(fd, F_GETFL, 0);
+    if(flags == -1){
+        RTC_LOG(LS_WARNING) << "fcntl F_GETFL error, errno: " << errno << ", error: " << strerror(errno);
+        return -1;
+    }
+    flags |= O_NONBLOCK;
+    if(fcntl(fd, F_SETFL, flags) == -1){
+        RTC_LOG(LS_WARNING) << "fcntl F_SETFL error, errno: " << errno << ", error: " << strerror(errno);
+        return -1;
+    }
+    return 0;
+}
+
+int xrtc::sock_set_nodelay(int fd)
+{
+    int flag = 1;
+    int ret = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
+    if(ret == -1){
+        RTC_LOG(LS_WARNING) << "setsockopt TCP_NODELAY error, errno: " << errno << ", error: " << strerror(errno);
+        return -1;
+    }
+    return 0;
+}
+
+int xrtc::sock_peer_to_str(int fd, std::string& host, int& port){
+    struct sockaddr_in addr;
+    socklen_t len = sizeof(addr);
+    if(getpeername(fd, (struct sockaddr*)&addr, &len) == -1){
+        if(!host.empty()){
+            host.clear();
+            host="?";
+        }
+        if(port){
+            port = 0;
+        }
+        RTC_LOG(LS_WARNING) << "getpeername error, errno: " << errno << ", error: " << strerror(errno);
+        return -1;
+    }
+    host = inet_ntoa(addr.sin_addr);
+    port = ntohs(addr.sin_port);
+
+    return 0;
 }

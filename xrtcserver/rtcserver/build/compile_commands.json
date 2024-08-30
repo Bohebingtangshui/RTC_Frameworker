@@ -1,44 +1,50 @@
 [
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/conf.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/conf.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/conf.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/base/conf.cpp.o"
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/event_loop.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/event_loop.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/event_loop.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/event_loop.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/event_loop.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/base/event_loop.cpp.o"
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/log.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/log.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/log.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/base/log.cpp.o"
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/socket.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/base/socket.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/base/socket.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/base/socket.cpp.o"
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/main.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/main.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/main.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/main.cpp.o"
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_server.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/signaling/signaling_server.cpp.o"
 },
 {
   "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
-  "command": "/usr/bin/g++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_worker.cpp",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_worker.cpp",
   "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/signaling_worker.cpp",
   "output": "CMakeFiles/rtcserver.dir/src/signaling/signaling_worker.cpp.o"
+},
+{
+  "directory": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build",
+  "command": "/usr/bin/clang++  -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./src -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/./thirdparty/include -I/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/../rtcbase/src -g   -g -pipe -W -Wall -fPIC -std=gnu++20 -DWEBRTC_POSIX     -DWEBRTC_LINUX -o CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o -c /home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.cpp",
+  "file": "/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/src/signaling/tcp_connection.cpp",
+  "output": "CMakeFiles/rtcserver.dir/src/signaling/tcp_connection.cpp.o"
 }
 ]
