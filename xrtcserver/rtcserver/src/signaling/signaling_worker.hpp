@@ -4,6 +4,7 @@
 #include "base/Lock_Free_Queue.hpp"
 #include "tcp_connection.hpp"
 #include <vector>
+#include "rtc_base/slice.h"
 
 
 namespace xrtc {   
@@ -26,6 +27,8 @@ namespace xrtc {
         friend void conn_io_cb(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
         void join();
         int notify_new_conn(int fd);
+        int process_query_buffer(TcpConnection* conn);
+        int process_request_(TcpConnection* conn, const rtc::Slice& header, const rtc::Slice& body);
         
 
     private:

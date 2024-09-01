@@ -6,6 +6,10 @@
 namespace xrtc {
     class TcpConnection {
     public:
+        enum {
+            STATE_HEAD = 0,
+            STATE_BODY = 1,
+        };
         TcpConnection(int fd);
         ~TcpConnection();
         void Connect(const std::string &host, int port);
@@ -21,5 +25,7 @@ namespace xrtc {
         sds querybuf;
         size_t bytes_expected=XHEAD_SIZE;
         size_t bytes_processed=0;
+
+        int current_state=STATE_HEAD;
     };  
 }

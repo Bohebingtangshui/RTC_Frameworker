@@ -7,6 +7,7 @@
 #include "base/Lock_Free_Queue.hpp"
 #include "base/socket.hpp"
 #include "tcp_connection.hpp"
+#include "rtc_base/slice.h"
 namespace xrtc
 {
 SignalingWorker::SignalingWorker(int worker_id):worker_id_(worker_id),event_loop_(new EventLoop(this))
@@ -135,7 +136,7 @@ void SignalingWorker::read_query(int fd){
 
     conn->querybuf = sdsMakeRoomFor(conn->querybuf, read_len);
     nread = sock_read_data(fd,conn->querybuf+qb_len,read_len);
-    RTC_LOG(LS_INFO)<<"read query from fd:"<<fd<<", nread:"<<nread;
+    RTC_LOG(LS_INFO)<< "sock read data, len: " << nread;
     if(nread<=0)
     {
         RTC_LOG(LS_WARNING)<<"read query failed, fd:"<<fd<<", error:"<<strerror(errno)<<", errno:"<<errno;
@@ -144,6 +145,16 @@ void SignalingWorker::read_query(int fd){
         return;
     }else if(nread>0){
         sdsIncrLen(conn->querybuf, nread);
+    }
+    RTC_LOG(LS_INFO)<<"GOING TO PROCESS QUERY BUFFER";
+    int ret = process_query_buffer(conn);
+    if(ret<0)
+    {
+        RTC_LOG(LS_WARNING)<<"process query buffer failed, fd:"<<fd;
+        // close_conn_(conn);
+        // delete conn;
+        // conns_[fd]=nullptr;
+        return;
     }
     
 
@@ -175,13 +186,60 @@ void SignalingWorker::new_conn(int fd)
     conn->io_watcher_ = event_loop_->creat_io_event(conn_io_cb, this);
     event_loop_->start_io_event(conn->io_watcher_, fd, EventLoop::READ);
 
-    if(fd>=conns_.size())
+    if((size_t)fd>=conns_.size())
     {
         conns_.resize(fd+1, nullptr);
     }
     conns_[fd]=conn;
 
     
+}
+
+int SignalingWorker::process_request_(TcpConnection* conn, const rtc::Slice& header, const rtc::Slice& body)
+{
+    RTC_LOG(LS_INFO)<<"receive body: "<<body.data();
+    return 0;
+}
+
+int SignalingWorker::process_query_buffer(TcpConnection* conn)
+{
+    while (sdslen(conn->querybuf) >= conn->bytes_expected+conn->bytes_processed)
+    {
+        RTC_LOG(LS_INFO)<<"process query buffer, fd:"<<conn->fd_;
+        xhead_t* head = (xhead_t*)(conn->querybuf);
+        if(conn->current_state == TcpConnection::STATE_HEAD)
+        {
+            RTC_LOG(LS_INFO)<<"process head";
+            if(head->magic_num != XHEAD_MAGIC)
+            {
+                RTC_LOG(LS_WARNING)<<"invalid magic num:"<<head->magic_num;
+                return -1;
+            }
+            RTC_LOG(LS_INFO)<<"process head success";
+            conn->bytes_processed = XHEAD_SIZE;
+            conn->bytes_expected = head->body_len;
+            conn->current_state = TcpConnection::STATE_BODY;
+        }else if(conn->current_state == TcpConnection::STATE_BODY)
+        {
+            RTC_LOG(LS_INFO)<<"process body";
+            rtc::Slice header(conn->querybuf, XHEAD_SIZE);
+            rtc::Slice body(conn->querybuf+XHEAD_SIZE, head->body_len);
+
+            int ret=process_request_(conn, header, body);
+            if(ret<0)
+            {
+                RTC_LOG(LS_WARNING)<<"process request failed";
+                return -1;
+            }
+            RTC_LOG(LS_INFO)<<"process request success";
+            //短连接处理
+            conn->bytes_processed = 65535;
+
+        }
+        conn->querybuf = sdsrange(conn->querybuf, conn->bytes_expected, -1);
+    
+    }
+    return 0;
 }
 
 } // namespace xrtc

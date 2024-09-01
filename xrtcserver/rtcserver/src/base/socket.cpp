@@ -1,5 +1,4 @@
 #include "socket.hpp"
-#include <iostream>
 #include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>

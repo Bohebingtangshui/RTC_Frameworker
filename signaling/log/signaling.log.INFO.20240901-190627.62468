@@ -1,0 +1,13 @@
+Log file created at: 2024/09/01 19:06:27
+Running on machine: ZHYServer
+Binary: Built with gc go1.23.0 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0901 19:06:27.699239   62468 https-server.go:96] Register static url /static/
+I0901 19:06:27.699470   62468 https-server.go:97] Registering static url at prefix /static/
+I0901 19:06:27.699507   62468 https-server.go:107] Start https server on port 443
+I0901 19:06:27.699691   62468 https-server.go:102] Start http server on port 80
+I0901 19:06:38.529029   62468 log.go:74] logId[2980134534]url[/xrtcclient/push]referer[]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0]clientIP[172.19.233.102:11459]realClientIP[172.19.233.102:11459]video[1]uid[999]streamName[789]audio[1]totalCost[0.459ms] 
+I0901 19:06:44.426320   62468 log.go:74] logId[3933484644]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0]clientIP[172.19.233.102:11459]realClientIP[172.19.233.102:11459]uid[999]streamName[789]audio[1]video[1]totalCost[0.572ms] 
+I0901 19:08:59.257339   62468 log.go:74] logId[369021320]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0]clientIP[172.19.233.102:11459]realClientIP[172.19.233.102:11459]uid[999]streamName[789]audio[1]video[1]totalCost[0.374ms] 
+I0901 19:11:28.941013   62468 log.go:74] logId[1700411649]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0]clientIP[172.19.233.102:11459]realClientIP[172.19.233.102:11459]uid[999]streamName[789]audio[1]video[1]totalCost[0.460ms] 
+I0901 19:31:07.258511   62468 log.go:74] logId[3407082052]url[/signaling/push]referer[https://www.bohebing.top/xrtcclient/push?uid=999&streamName=789&audio=1&video=1]cookie[]user-agent[Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0]clientIP[172.19.233.102:11459]realClientIP[172.19.233.102:11459]streamName[789]audio[1]video[1]uid[999]totalCost[0.354ms] 
