@@ -1,3 +1,0 @@
-2024-09-01 22:23:45 - WARNING: [210:081][84887] (src/base/socket.cpp:152): connection closed, fd: 15
-2024-09-01 22:23:45 - WARNING: [210:081][84887] (src/signaling/signaling_worker.cpp:146): read query failed, fd:15, error:Success, errno:0
-

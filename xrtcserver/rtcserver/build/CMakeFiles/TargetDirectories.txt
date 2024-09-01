@@ -1,3 +1,0 @@
-/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles/rtcserver.dir
-/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles/edit_cache.dir
-/home/bohebing/Desktop/XRTCproject/xrtcserver/rtcserver/build/CMakeFiles/rebuild_cache.dir
