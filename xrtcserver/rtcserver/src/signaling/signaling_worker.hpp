@@ -29,6 +29,7 @@ namespace xrtc {
         int notify_new_conn(int fd);
         int process_query_buffer(TcpConnection* conn);
         int process_request_(TcpConnection* conn, const rtc::Slice& header, const rtc::Slice& body);
+        void close_conn_(TcpConnection* conn);
         
 
     private:

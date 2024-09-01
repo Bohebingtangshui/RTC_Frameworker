@@ -150,6 +150,7 @@ int xrtc::sock_read_data(int fd, char* buf, int len){
         }
     }else if (nread==0) {
         RTC_LOG(LS_WARNING) << "connection closed, fd: " << fd ;
+        return -1;
     }
     return nread;
 }

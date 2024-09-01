@@ -11,7 +11,6 @@ namespace xrtc {
             STATE_BODY = 1,
         };
         TcpConnection(int fd);
-        ~TcpConnection();
         void Connect(const std::string &host, int port);
         void Send(const char* data, int len);
         void Close();

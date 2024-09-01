@@ -137,11 +137,14 @@ void SignalingWorker::read_query(int fd){
     conn->querybuf = sdsMakeRoomFor(conn->querybuf, read_len);
     nread = sock_read_data(fd,conn->querybuf+qb_len,read_len);
     RTC_LOG(LS_INFO)<< "sock read data, len: " << nread;
-    if(nread<=0)
+
+    std::string data_read(conn->querybuf, sdslen(conn->querybuf));
+    RTC_LOG(LS_INFO) << "Data read: " << data_read;
+
+    if(nread==-1)
     {
         RTC_LOG(LS_WARNING)<<"read query failed, fd:"<<fd<<", error:"<<strerror(errno)<<", errno:"<<errno;
-        // delete conn;
-        // conns_[fd]=nullptr;
+        close_conn_(conn);
         return;
     }else if(nread>0){
         sdsIncrLen(conn->querybuf, nread);
@@ -156,10 +159,15 @@ void SignalingWorker::read_query(int fd){
         // conns_[fd]=nullptr;
         return;
     }
-    
-
 }
 
+void SignalingWorker::close_conn_(TcpConnection* conn)
+{
+    close(conn->fd_);
+    event_loop_->delete_io_event(conn->io_watcher_);
+    conns_[conn->fd_]=nullptr;
+    delete conn;
+}
 void conn_io_cb(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int events, void* data)
 {
     SignalingWorker* worker = static_cast<SignalingWorker*>(data);
@@ -188,7 +196,7 @@ void SignalingWorker::new_conn(int fd)
 
     if((size_t)fd>=conns_.size())
     {
-        conns_.resize(fd+1, nullptr);
+        conns_.resize(fd*2, nullptr);
     }
     conns_[fd]=conn;
 
@@ -215,7 +223,7 @@ int SignalingWorker::process_query_buffer(TcpConnection* conn)
                 RTC_LOG(LS_WARNING)<<"invalid magic num:"<<head->magic_num;
                 return -1;
             }
-            RTC_LOG(LS_INFO)<<"process head success";
+            RTC_LOG(LS_INFO)<<"process head success"<<"head body len: "<<head->body_len;
             conn->bytes_processed = XHEAD_SIZE;
             conn->bytes_expected = head->body_len;
             conn->current_state = TcpConnection::STATE_BODY;
@@ -236,7 +244,6 @@ int SignalingWorker::process_query_buffer(TcpConnection* conn)
             conn->bytes_processed = 65535;
 
         }
-        conn->querybuf = sdsrange(conn->querybuf, conn->bytes_expected, -1);
     
     }
     return 0;
