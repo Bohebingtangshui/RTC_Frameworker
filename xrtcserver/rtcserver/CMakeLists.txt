@@ -22,7 +22,7 @@ link_directories(
 file(GLOB all_src
     "./src/*.cpp"
     "./src/base/*.cpp"
-    "./src/signaling/*.cpp"
+    "./src/server/*.cpp"
 )
 
 add_executable(rtcserver ${all_src})

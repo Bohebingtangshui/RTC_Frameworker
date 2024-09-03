@@ -1,4 +1,4 @@
-#include "signaling/signaling_server.hpp"
+#include "server/signaling_server.hpp"
 #include "yaml-cpp/yaml.h"
 #include "rtc_base/logging.h"
 #include "base/socket.hpp"
