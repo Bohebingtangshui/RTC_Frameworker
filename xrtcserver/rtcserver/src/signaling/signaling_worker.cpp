@@ -8,6 +8,10 @@
 #include "base/socket.hpp"
 #include "tcp_connection.hpp"
 #include "rtc_base/slice.h"
+#include "xrtcserver_def.hpp"
+#include <memory>
+
+
 namespace xrtc
 {
 SignalingWorker::SignalingWorker(int worker_id,const signaling_server_conf& options):worker_id_(worker_id),_options(options),event_loop_(new EventLoop(this))
@@ -249,6 +253,61 @@ void SignalingWorker::new_conn(int fd)
 int SignalingWorker::process_request_(TcpConnection* conn, const rtc::Slice& header, const rtc::Slice& body)
 {
     RTC_LOG(LS_INFO)<<"receive body: "<<body.data();
+    xhead_t* xh=(xhead_t*)header.data();
+    Json::CharReaderBuilder builder;
+    std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    Json::Value root;
+    JSONCPP_STRING errs;
+    reader->parse(body.data(), body.data()+body.size(), &root, &errs);
+    if(!errs.empty()){
+        RTC_LOG(LS_WARNING)<<"parse json body error, error:"<<errs<<", fd "<<conn->fd_<<", log_id"<<xh->log_id;
+        return -1;
+    }
+
+    int cmdno;
+    try {
+        cmdno = root["cmdno"].asInt();
+
+    } catch (Json::Exception e) {
+        RTC_LOG(LS_WARNING)<<"no cmdno field in body, log_id: "<<xh->log_id;
+        return -1;
+    }
+
+    switch (cmdno) {
+        case CMDNO_PUSH:
+            RTC_LOG(LS_INFO)<<"CMDNO_PUSH";
+            return process_push_(cmdno,conn,root,xh->log_id);    
+
+    
+    }
+    return 0;
+}
+
+int SignalingWorker::process_push_(int cmdno,TcpConnection* conn,const Json::Value& root, uint32_t log_id){
+    uint64_t uid;
+    std::string stream_name;
+    int audio;
+    int video;
+
+    try {
+        uid = root["uid"].asUInt64();
+        stream_name = root["streamName"].asString();
+        audio = root["audio"].asInt();
+        video = root["video"].asInt();
+    } catch (Json::Exception e) {
+        RTC_LOG(LS_WARNING)<<"parse push body error: " <<e.what()<<"log_id:"<<log_id;
+        return -1;
+    }
+    RTC_LOG(LS_INFO)<<"cmdno: "<<cmdno<< " push stream, uid: " << uid << ", stream_name: " << stream_name << ", audio: " << audio << ", video: " << video<< " signaling server push request";
+
+    std::shared_ptr<RtcMsg> msg = std::make_shared<RtcMsg>();
+    msg->cmdno = cmdno;
+    msg->uid = uid;
+    msg->stream_name = stream_name;
+    msg->audio = audio;
+    msg->video = video;
+
+    // return g_rtc_server->send_rtc_msg(msg);
     return 0;
 }
 

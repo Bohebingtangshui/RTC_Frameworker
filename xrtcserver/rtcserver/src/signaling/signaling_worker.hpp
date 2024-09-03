@@ -6,6 +6,7 @@
 #include <vector>
 #include "rtc_base/slice.h"
 #include "signaling_server.hpp"
+#include "json/json.h"
 
 
 namespace xrtc {   
@@ -39,7 +40,7 @@ namespace xrtc {
         void new_conn(int fd);
         void read_query(int fd);
         void process_timeout(TcpConnection* conn);
-
+        int process_push_(int cmdno,TcpConnection* conn,const Json::Value& root, uint32_t log_id);
 
     private:
         int worker_id_;
