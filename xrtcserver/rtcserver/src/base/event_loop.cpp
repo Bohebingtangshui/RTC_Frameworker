@@ -24,6 +24,10 @@ namespace xrtc
         RTC_LOG(LS_INFO) << "event loop stop break";
         ev_break(loop_, EVBREAK_ALL);
     }
+    unsigned long EventLoop::now()
+    {
+        return static_cast<unsigned long>(ev_now(loop_)*1000000);
+    }
 
     class IOWatcher
     {
@@ -145,6 +149,7 @@ namespace xrtc
 
         if (!watcher->repeat_)
         {
+            ev_timer_stop(loop_, timer);
             ev_timer_set(timer, sec, 0);
             ev_timer_start(loop_, timer);
         }

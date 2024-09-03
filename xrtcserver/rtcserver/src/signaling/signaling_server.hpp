@@ -37,7 +37,7 @@ private:
     void dispatch_conn(int fd);
 
 private:
-    signaling_server_conf signaling_server_conf_;
+    signaling_server_conf _options;
     EventLoop* event_loop_{nullptr};
     IOWatcher* io_watcher_{nullptr};
     std::thread* _thread{nullptr};

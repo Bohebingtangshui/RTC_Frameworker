@@ -5,6 +5,7 @@
 #include "tcp_connection.hpp"
 #include <vector>
 #include "rtc_base/slice.h"
+#include "signaling_server.hpp"
 
 
 namespace xrtc {   
@@ -16,7 +17,7 @@ namespace xrtc {
             QUIT = 0,
             NEW_CONN = 1,
         };
-        SignalingWorker(int worker_id);
+        SignalingWorker(int worker_id,const signaling_server_conf& options);
         ~SignalingWorker();
         int init();
         bool start();
@@ -30,18 +31,19 @@ namespace xrtc {
         int process_query_buffer(TcpConnection* conn);
         int process_request_(TcpConnection* conn, const rtc::Slice& header, const rtc::Slice& body);
         void close_conn_(TcpConnection* conn);
-        
+        friend void conn_timer_cb(EventLoop* el, Timewatcher* /*watcher*/, void* data);
 
     private:
         void process_notify(int msg);
         void _stop();
         void new_conn(int fd);
         void read_query(int fd);
+        void process_timeout(TcpConnection* conn);
 
 
     private:
         int worker_id_;
-
+        signaling_server_conf _options;
         EventLoop* event_loop_;
         IOWatcher* pipe_watcher_{nullptr};
         int notify_recv_fd_{-1};

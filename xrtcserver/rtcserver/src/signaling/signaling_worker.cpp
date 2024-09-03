@@ -10,13 +10,32 @@
 #include "rtc_base/slice.h"
 namespace xrtc
 {
-SignalingWorker::SignalingWorker(int worker_id):worker_id_(worker_id),event_loop_(new EventLoop(this))
+SignalingWorker::SignalingWorker(int worker_id,const signaling_server_conf& options):worker_id_(worker_id),_options(options),event_loop_(new EventLoop(this))
 {
 
 }
 
 SignalingWorker::~SignalingWorker()
 {
+    for(auto conn : conns_)
+    {
+        if(conn)
+        {
+            close_conn_(conn);
+        }
+    }
+    conns_.clear();
+    if(event_loop_)
+    {
+        delete event_loop_;
+        event_loop_ = nullptr;
+    }
+    if(thread_)
+    {
+        delete thread_;
+        thread_ = nullptr;
+    }
+
 }
 
 void signaling_worker_recv_notify(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int /*events*/, void* data)
@@ -138,6 +157,8 @@ void SignalingWorker::read_query(int fd){
     nread = sock_read_data(fd,conn->querybuf+qb_len,read_len);
     RTC_LOG(LS_INFO)<< "sock read data, len: " << nread;
 
+    conn->last_interaction_time = event_loop_->now();
+
     std::string data_read(conn->querybuf, sdslen(conn->querybuf));
     RTC_LOG(LS_INFO) << "Data read: " << data_read;
 
@@ -164,6 +185,7 @@ void SignalingWorker::read_query(int fd){
 void SignalingWorker::close_conn_(TcpConnection* conn)
 {
     close(conn->fd_);
+    event_loop_->delete_timer(conn->timer_watcher_);
     event_loop_->delete_io_event(conn->io_watcher_);
     conns_[conn->fd_]=nullptr;
     delete conn;
@@ -174,6 +196,22 @@ void conn_io_cb(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int events, v
     if(events & EventLoop::READ)
     {
         worker->read_query(fd);
+    }
+}
+
+void conn_timer_cb(EventLoop* el, Timewatcher* /*watcher*/, void* data)
+{
+    SignalingWorker* worker = (SignalingWorker*)el->owner();
+    TcpConnection* conn = (TcpConnection*)data;
+    worker->process_timeout(conn);
+}
+
+void SignalingWorker::process_timeout(TcpConnection* conn)
+{
+    if(event_loop_->now()-conn->last_interaction_time>= (unsigned long)_options.connection_timeout)
+    {
+        RTC_LOG(LS_INFO) << "connection timeout, fd: " << conn->fd_; 
+        close_conn_(conn);
     }
 }
 
@@ -193,6 +231,11 @@ void SignalingWorker::new_conn(int fd)
 
     conn->io_watcher_ = event_loop_->creat_io_event(conn_io_cb, this);
     event_loop_->start_io_event(conn->io_watcher_, fd, EventLoop::READ);
+
+    conn->timer_watcher_=event_loop_->creat_timer(conn_timer_cb, conn,1);
+    event_loop_->start_timer(conn->timer_watcher_, 100000); // 100ms
+
+    conn->last_interaction_time = event_loop_->now();
 
     if((size_t)fd>=conns_.size())
     {

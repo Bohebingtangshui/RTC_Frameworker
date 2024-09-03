@@ -11,6 +11,7 @@ namespace xrtc {
             STATE_BODY = 1,
         };
         TcpConnection(int fd);
+        ~TcpConnection();
         void Connect(const std::string &host, int port);
         void Send(const char* data, int len);
         void Close();
@@ -20,11 +21,14 @@ namespace xrtc {
         std::string host_;
         int port_;
         IOWatcher* io_watcher_{nullptr};
+        Timewatcher* timer_watcher_{nullptr};
 
         sds querybuf;
         size_t bytes_expected=XHEAD_SIZE;
         size_t bytes_processed=0;
 
         int current_state=STATE_HEAD;
+        unsigned long last_interaction_time;
+        
     };  
 }

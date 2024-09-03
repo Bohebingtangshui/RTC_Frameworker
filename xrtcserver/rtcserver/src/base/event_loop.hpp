@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "libev/ev.h"
 
 struct ev_loop;
@@ -26,6 +25,10 @@ public:
 
     void start();
     void stop();
+    void* owner(){
+        return owner_;
+    }
+    unsigned long now();
 
     IOWatcher* creat_io_event(io_cb_t cb, void* data);
     void start_io_event(IOWatcher* watcher, int fd, int mask);

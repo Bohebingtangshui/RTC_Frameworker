@@ -81,10 +81,10 @@ namespace xrtc {
             YAML::Node conf = YAML::LoadFile(conf_file);
             RTC_LOG(LS_INFO) << "signaling server options:\n" << conf;
 
-            signaling_server_conf_.host = conf["host"].as<std::string>();
-            signaling_server_conf_.port = conf["port"].as<int>();
-            signaling_server_conf_.worker_num = conf["worker_num"].as<int>();
-            signaling_server_conf_.connection_timeout = conf["connection_timeout"].as<int>();
+            _options.host = conf["host"].as<std::string>();
+            _options.port = conf["port"].as<int>();
+            _options.worker_num = conf["worker_num"].as<int>();
+            _options.connection_timeout = conf["connection_timeout"].as<int>();
             RTC_LOG(LS_INFO)<<"signaling server conf init success";
         }
         catch(YAML::Exception  e)
@@ -106,7 +106,7 @@ namespace xrtc {
         _pipe_watcher_ = event_loop_->creat_io_event(signaling_server_recv_notify, this);
         event_loop_->start_io_event(_pipe_watcher_, _notify_recv_fd, EventLoop::READ);
 
-        _listen_fd = create_tcp_server(signaling_server_conf_.host, signaling_server_conf_.port);
+        _listen_fd = create_tcp_server(_options.host, _options.port);
         if(_listen_fd < 0)
         {
             RTC_LOG(LS_WARNING)<<"create tcp server failed";
@@ -116,7 +116,7 @@ namespace xrtc {
         event_loop_->start_io_event(io_watcher_, _listen_fd, EventLoop::READ);
 
         // create worker
-        for(int i = 0; i < signaling_server_conf_.worker_num; ++i)
+        for(int i = 0; i < _options.worker_num; ++i)
         {
             if(create_worker(i)!=0){
                 RTC_LOG(LS_WARNING)<<"create worker failed";
@@ -207,7 +207,7 @@ namespace xrtc {
     int SignalingServer::create_worker(int worker_id)
     {
         RTC_LOG(LS_INFO)<<"create worker:"<<worker_id;
-        SignalingWorker* worker = new SignalingWorker(worker_id);
+        SignalingWorker* worker = new SignalingWorker(worker_id,_options);
         if(worker->init() != 0)
         {
             RTC_LOG(LS_WARNING)<<"worker init failed";
