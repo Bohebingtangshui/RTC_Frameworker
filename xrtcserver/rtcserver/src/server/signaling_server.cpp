@@ -206,7 +206,7 @@ namespace xrtc {
 
     int SignalingServer::create_worker(int worker_id)
     {
-        RTC_LOG(LS_INFO)<<"create worker:"<<worker_id;
+        RTC_LOG(LS_INFO)<<"signaling server create worker:"<<worker_id;
         SignalingWorker* worker = new SignalingWorker(worker_id,_options);
         if(worker->init() != 0)
         {

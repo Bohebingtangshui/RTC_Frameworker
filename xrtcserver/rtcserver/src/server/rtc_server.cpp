@@ -2,6 +2,7 @@
 #include"yaml-cpp/yaml.h"
 #include "rtc_base/logging.h"
 #include "unistd.h"
+#include "rtc_worker.hpp"
 
 
 namespace xrtc {
@@ -21,7 +22,21 @@ namespace xrtc {
         
     }
     RtcServer::~RtcServer(){
+        if (event_loop_) {
+            delete event_loop_;
+            event_loop_=nullptr;
+        }
+        if(thread_){
+            delete thread_;
+            thread_=nullptr;
+        }
 
+        for(auto worker:_workers){
+            if(worker){
+                delete worker;
+            }
+            _workers.clear();
+        }
     }
     int RtcServer::Init(const std::string& conf_file){
         if(conf_file.empty()){
@@ -48,7 +63,26 @@ namespace xrtc {
         pipe_watcher_=event_loop_->creat_io_event(rtc_server_recv_notify, this);
         event_loop_->start_io_event(pipe_watcher_, notify_recv_fd_, EventLoop::READ);
 
+        for(int i=0;i<options_.worker_num;i++){
+            if(_create_worker(i)!=0){
+                return -1;
+            }
+        }
 
+        return 0;
+    }
+
+    int RtcServer::_create_worker(int worker_id){
+        RTC_LOG(LS_INFO)<<"rtc server create worker, worker id : "<<worker_id;
+        RtcWorker* worker = new RtcWorker(worker_id,options_);
+
+        if(worker->init()!=0){
+            return -1;
+        }
+        if(!worker->start()){
+            return -1;
+        }
+        _workers.emplace_back(worker);
         return 0;
     }
     
@@ -92,6 +126,13 @@ namespace xrtc {
         event_loop_->stop();
         close(notify_recv_fd_);
         close(notify_send_fd_);
+
+        for(auto worker:_workers){
+            if(worker){
+                worker->stop();
+                worker->join();
+            }
+        }
 
     }
 

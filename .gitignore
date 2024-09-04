@@ -2,3 +2,4 @@ xrtcserver/rtcserver/.cache/
 xrtcserver/rtcserver/build/
 xrtcserver/rtcserver/.log/
 signaling/log/
+xrtcserver/rtcserver/.clang-format

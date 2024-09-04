@@ -8,9 +8,11 @@
 #include <queue>
 #include <mutex>
 namespace xrtc {
+    
     struct RtcServerOptions{
         int worker_num;
     };
+    class RtcWorker;
     class RtcServer {
     public:
         enum{
@@ -27,12 +29,13 @@ namespace xrtc {
         int send_rtc_msg(std::shared_ptr<RtcMsg>);
         void push_msg(std::shared_ptr<RtcMsg>);
         std::shared_ptr<RtcMsg> pop_msg();
-
         friend void rtc_server_recv_notify(EventLoop*,IOWatcher*,int,int,void*);
     private:
         void process_notify(int msg);
         void _stop();
         void process_rtc_msg();
+        int _create_worker(int worker_id);
+
         void new_conn(int fd);
         void read_query(int fd);
         void process_timeout(TcpConnection* conn);
@@ -47,6 +50,7 @@ namespace xrtc {
         std::thread* thread_{nullptr};
         std::queue<std::shared_ptr<RtcMsg>> _q_msg;
         std::mutex _q_msg_mtx;
+        std::vector<RtcWorker*>_workers;
         std::vector<TcpConnection*>conns_;
     };
 }
