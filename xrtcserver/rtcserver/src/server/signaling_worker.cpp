@@ -10,8 +10,10 @@
 #include "rtc_base/slice.h"
 #include "xrtcserver_def.hpp"
 #include <memory>
+#include "rtc_server.hpp"
 
 
+extern xrtc::RtcServer* g_rtc_server;
 namespace xrtc
 {
 SignalingWorker::SignalingWorker(int worker_id,const signaling_server_conf& options):worker_id_(worker_id),_options(options),event_loop_(new EventLoop(this))
@@ -307,8 +309,7 @@ int SignalingWorker::process_push_(int cmdno,TcpConnection* conn,const Json::Val
     msg->audio = audio;
     msg->video = video;
 
-    // return g_rtc_server->send_rtc_msg(msg);
-    return 0;
+    return g_rtc_server->send_rtc_msg(msg);
 }
 
 int SignalingWorker::process_query_buffer(TcpConnection* conn)

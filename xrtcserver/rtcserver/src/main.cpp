@@ -5,12 +5,12 @@
 #include "rtc_base/logging.h"
 #include "server/signaling_server.hpp"
 #include <signal.h>
-
+#include "server/rtc_server.hpp"
 
 xrtc::GeneralConf* g_conf{nullptr};
 xrtc::XrtcLog* g_log{nullptr};
 xrtc::SignalingServer* g_signaling_server{nullptr};
-
+xrtc::RtcServer* g_rtc_server{nullptr};
 int InitGeneralConf(const std::string& conf_file) {
     if(conf_file.empty()) {
         std::cerr<<"conf file is empty"<<std::endl;
@@ -44,12 +44,25 @@ int InitSignalingServer(const std::string& conf_file) {
     return 0;
 }
 
+int InitRtcServer(const std::string& conf_file) {
+    g_rtc_server = new xrtc::RtcServer();
+    if(g_rtc_server->Init(conf_file) != 0) {
+        std::cerr<<"init rtc server failed"<<std::endl;
+        return -1;
+    }
+    return 0;
+}
+
 static void process_signal(int sig) {
     RTC_LOG(LS_INFO)<<"receive signal:"<<sig;
     if(SIGINT == sig || SIGTERM == sig) {
         if(g_signaling_server){
             RTC_LOG(LS_INFO)<<"signal stop signaling server";
             g_signaling_server->stop();
+        }
+        if(g_rtc_server){
+            RTC_LOG(LS_INFO)<<"signal stop rtc server";
+            g_rtc_server->stop();
         }
     }
 }
@@ -70,11 +83,19 @@ int main() {
         return -1;
     }
 
+    if(InitRtcServer("../conf/rtc_server.yaml") != 0) {
+        std::cerr<<"init rtc server failed"<<std::endl;
+        return -1;
+    }
+
     signal(SIGINT,process_signal);
     signal(SIGTERM,process_signal);
 
     g_signaling_server->start();
+    g_rtc_server->start();
+
     g_signaling_server->join();
+    g_rtc_server->join();
 
 
     return 0;
