@@ -15,5 +15,10 @@ namespace xrtc {
         int audio=0;
         int video=0;
         u_int32_t log_id=0;
+
+        void* worker=nullptr;
+        void* conn=nullptr;
+        std::string sdp;
+        int err_no=0;
     };
 }

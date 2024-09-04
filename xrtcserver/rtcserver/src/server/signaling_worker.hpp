@@ -7,8 +7,9 @@
 #include "rtc_base/slice.h"
 #include "signaling_server.hpp"
 #include "json/json.h"
-
-
+#include "xrtcserver_def.hpp"
+#include <queue>
+#include <mutex>
 namespace xrtc {   
     class TcpConnection;
     class SignalingWorker
@@ -17,6 +18,7 @@ namespace xrtc {
         enum  {
             QUIT = 0,
             NEW_CONN = 1,
+            RTC_MSG=2,
         };
         SignalingWorker(int worker_id,const signaling_server_conf& options);
         ~SignalingWorker();
@@ -24,6 +26,9 @@ namespace xrtc {
         bool start();
         void stop();
         int notify(int msg);
+        void push_msg(std::shared_ptr<RtcMsg> msg);
+        std::shared_ptr<RtcMsg> pop_msg();
+        int send_rtc_msg(std::shared_ptr<RtcMsg> msg);
 
         friend void signaling_worker_recv_notify(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
         friend void conn_io_cb(EventLoop* el, IOWatcher* watcher, int fd, int events, void* data);
@@ -32,6 +37,9 @@ namespace xrtc {
         int process_query_buffer(TcpConnection* conn);
         int process_request_(TcpConnection* conn, const rtc::Slice& header, const rtc::Slice& body);
         void close_conn_(TcpConnection* conn);
+        void _process_rtc_msg();
+        void _response_server_offer(std::shared_ptr<RtcMsg> msg);
+
         friend void conn_timer_cb(EventLoop* el, Timewatcher* /*watcher*/, void* data);
 
     private:
@@ -54,5 +62,8 @@ namespace xrtc {
         LockFreeQueue<int> q_conn_;
 
         std::vector<TcpConnection*>conns_;
+
+        std::queue<std::shared_ptr<RtcMsg>> _q_msg;
+        std::mutex _q_msg_mtx;
     };
 }
