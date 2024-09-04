@@ -9,7 +9,7 @@
 #include <mutex>
 namespace xrtc {
     
-    struct RtcServerOptions{
+    struct RtcServerOptions{ 
         int worker_num;
     };
     class RtcWorker;
@@ -29,6 +29,7 @@ namespace xrtc {
         int send_rtc_msg(std::shared_ptr<RtcMsg>);
         void push_msg(std::shared_ptr<RtcMsg>);
         std::shared_ptr<RtcMsg> pop_msg();
+        RtcWorker* get_worker(const std::string& stream_name);
         friend void rtc_server_recv_notify(EventLoop*,IOWatcher*,int,int,void*);
     private:
         void process_notify(int msg);

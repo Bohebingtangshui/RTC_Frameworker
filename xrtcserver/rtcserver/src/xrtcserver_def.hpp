@@ -14,5 +14,6 @@ namespace xrtc {
         std::string stream_name;
         int audio=0;
         int video=0;
+        u_int32_t log_id=0;
     };
 }

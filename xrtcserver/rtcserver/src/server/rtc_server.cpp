@@ -3,6 +3,7 @@
 #include "rtc_base/logging.h"
 #include "unistd.h"
 #include "rtc_worker.hpp"
+#include "rtc_base/crc32.h"
 
 
 namespace xrtc {
@@ -162,12 +163,25 @@ namespace xrtc {
         return msg;
     }
 
+    RtcWorker* RtcServer::get_worker(const std::string& stream_name){
+        if(_workers.size()==0 || _workers.size()!=(size_t)options_.worker_num){
+            return nullptr;
+        }
+        uint32_t num= rtc::ComputeCrc32(stream_name);
+        size_t index = num % options_.worker_num;
+        return _workers[index];
+    }
+
     void RtcServer::process_rtc_msg(){
         std::shared_ptr<RtcMsg> msg=pop_msg();
         if(!msg){
             return;
         }
-        RTC_LOG(LS_WARNING)<<"=====================cmdno: "<<msg->cmdno<<", uid: "<<msg->uid;
+
+        RtcWorker* worker = get_worker(msg->stream_name);
+        if(worker){
+            worker->send_rtc_msg(msg);
+        }
     }
 
 }

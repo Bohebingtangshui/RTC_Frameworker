@@ -62,6 +62,9 @@ void RtcWorker::_process_notify(int msg) {
         case QUIT:
             _stop();
             break;
+        case RTC_MSG:
+            process_rtc_msg();
+            break;
         default:
             RTC_LOG(LS_WARNING)<<"unknown msg: "<<msg;
             break;
@@ -94,6 +97,42 @@ void RtcWorker::join(){
     if(_thread && _thread->joinable()){
         _thread->join();
     }
+}
+
+int RtcWorker::send_rtc_msg(std::shared_ptr<RtcMsg> msg){
+    // add msg to queue belong to worker
+    push_msg(msg);
+    return notify(RTC_MSG);
+}
+
+void RtcWorker::push_msg(std::shared_ptr<RtcMsg> msg){
+    _q_msg.produce(msg);
+}
+
+bool RtcWorker::pop_msg(std::shared_ptr<RtcMsg>* msg){
+    return _q_msg.consume(msg);
+}
+
+void RtcWorker::process_rtc_msg(){
+    std::shared_ptr<RtcMsg> msg;
+    if(!pop_msg(&msg)){
+        return;
+    }
+    RTC_LOG(LS_INFO)<<"cmdno["<<msg->cmdno<<"], uid["<<msg->uid
+    <<"] streamName["<<msg->stream_name<<"] audio["<<msg->audio<<"] video["<<msg->video
+    <<"] log_id:["<<msg->log_id<<"] rtc worker receive msg, worker id: "<<worker_id;
+
+    switch (msg->cmdno) {
+        case CMDNO_PUSH:
+            _process_push(msg);
+            break;
+        default:
+            RTC_LOG(LS_WARNING)<<"unknown cmdno: "<<msg->cmdno<<", log_id: "<<msg->log_id;
+    }
+}
+
+void RtcWorker::_process_push(std::shared_ptr<RtcMsg> msg){
+    
 }
 
 } // namespace xrtc

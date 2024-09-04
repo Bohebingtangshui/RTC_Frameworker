@@ -308,7 +308,7 @@ int SignalingWorker::process_push_(int cmdno,TcpConnection* conn,const Json::Val
     msg->stream_name = stream_name;
     msg->audio = audio;
     msg->video = video;
-
+    msg->log_id= log_id;
     return g_rtc_server->send_rtc_msg(msg);
 }
 
