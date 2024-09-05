@@ -11,6 +11,7 @@
 #include "xrtcserver_def.hpp"
 #include <memory>
 #include "rtc_server.hpp"
+#include "rtc_base/zmalloc.h"
 
 
 extern xrtc::RtcServer* g_rtc_server;
@@ -315,6 +316,7 @@ int SignalingWorker::process_push_(int cmdno,TcpConnection* conn,const Json::Val
     msg->log_id= log_id;
     msg->worker=this;
     msg->conn=conn;
+    msg->fd=conn->fd_;
     return g_rtc_server->send_rtc_msg(msg);
 }
 
@@ -392,7 +394,50 @@ int SignalingWorker::process_query_buffer(TcpConnection* conn)
         }
 
         void SignalingWorker::_response_server_offer(std::shared_ptr<RtcMsg> msg){
-            RTC_LOG(LS_WARNING)<<"========================response server offer: "<<msg->sdp;
+            TcpConnection* conn=static_cast<TcpConnection*>(msg->conn);
+            if(!conn){
+                return;
+            }
+
+            int fd=msg->fd;
+            if(fd<0 || size_t(fd)>=conns_.size()){
+                return;
+            }
+            if(conns_[fd]!=conn){
+                return;
+            }
+
+            // construct response header
+            xhead_t* xh=(xhead_t*)(conn->querybuf);
+            rtc::Slice header(conn->querybuf,XHEAD_SIZE);
+            char* buf=(char*)zmalloc(XHEAD_SIZE+MAX_RES_BUF);
+            if(!buf){
+                RTC_LOG(LS_WARNING)<<"zmalloc error, log_id: "<<xh->log_id;
+                return;
+            }
+
+            memcpy(buf, header.data(), header.size());
+
+            xhead_t* res_xh=(xhead_t*) buf;
+            Json::Value res_root;
+            res_root["err_no"]=msg->err_no;
+            if(msg->err_no!=0){
+                res_root["err_msg"]="process error";
+                res_root["offer"]="";
+            }else{
+                res_root["err_msg"]="process success";
+                res_root["offer"]=msg->sdp;
+            }
+
+            Json::StreamWriterBuilder write_builder;
+            write_builder.settings_["indentation"]="";
+            std::string json_data=Json::writeString(write_builder, res_root);
+            RTC_LOG(LS_INFO)<<"response body: "<<json_data;
+
+            res_xh->body_len=json_data.size();
+            snprintf(buf+XHEAD_SIZE, MAX_RES_BUF, "%s",json_data.c_str());
+            rtc::Slice reply(buf,XHEAD_SIZE+res_xh->body_len);
+            // _add_reply(conn,reply);
         }
 
 

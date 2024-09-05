@@ -7,6 +7,8 @@
 #define CMDNO_STOPPUSH 4
 #define CMDNO_STOPPULL 5
 
+#define MAX_RES_BUF 4096
+
 namespace xrtc {
     struct RtcMsg{
         int cmdno=-1;
@@ -20,5 +22,7 @@ namespace xrtc {
         void* conn=nullptr;
         std::string sdp;
         int err_no=0;
+
+        int fd=0;
     };
 }
