@@ -3,6 +3,8 @@
 #include "base/event_loop.hpp"
 #include "base/xhead.hpp"
 #include "rtc_base/sds.h"
+#include <list>
+#include "rtc_base/slice.h"
 namespace xrtc {
     class TcpConnection {
     public:
@@ -29,6 +31,7 @@ namespace xrtc {
 
         int current_state=STATE_HEAD;
         unsigned long last_interaction_time;
-        
+        std::list<rtc::Slice> reply_list;
+        size_t cur_resp_pos{0};
     };  
 }

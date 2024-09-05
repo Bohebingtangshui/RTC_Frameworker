@@ -92,7 +92,7 @@ namespace xrtc
     {
         struct ev_io *io = &(watcher->io_);
         int active_events = TRANS_FROM_EV_MASK(io->events);
-        int new_events = active_events | ~mask;
+        int new_events = active_events & ~mask;
 
         if (new_events == active_events)
         {
