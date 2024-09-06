@@ -73,5 +73,13 @@ func (c *Client) DO(req *Request) (*Response, error) {
 		return nil, err
 	}
 
-	return nil, nil
+	// read response
+	resp,err:= ReadResponse(rw)
+	if err != nil {
+		return nil, err
+	}
+
+	nc.Close()
+
+	return resp, nil
 }
