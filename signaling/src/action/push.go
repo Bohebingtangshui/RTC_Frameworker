@@ -1,6 +1,8 @@
 package action
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"signaling/src/comerrors"
 	"signaling/src/framework"
@@ -25,6 +27,11 @@ type xrtcPushResp struct {
 	Errno  int    `json:"err_no"`
 	ErrMsg string `json:"err_msg"`
 	Offer  string `json:"offer"`
+}
+
+type pushData struct {
+	Type string `json:"type"`
+	Sdp  string `json:"sdp"`
 }
 
 func (*pushAction) Execute(w http.ResponseWriter, cr *framework.ComRequest) {
@@ -84,11 +91,27 @@ func (*pushAction) Execute(w http.ResponseWriter, cr *framework.ComRequest) {
 		Video:      video,
 	}
 	var resp xrtcPushResp
-	err = framework.Call("xrtc", req, resp, cr.LogId)
+	err = framework.Call("xrtc", req, &resp, cr.LogId)
 	if err != nil {
 		cerr := comerrors.NewComError(comerrors.NetworkErr, "backend process error"+err.Error())
 		writeJsonErrorResponse(cerr, w, cr)
 		return
 	}
+	if resp.Errno != 0 {
+		cerr := comerrors.NewComError(comerrors.NetworkErr, fmt.Sprintf("backend process error: %d", resp.Errno))
+		writeJsonErrorResponse(cerr, w, cr)
+		return
+	}
+	httpResp := comHttpResp{
+		ErrorNo:  0,
+		ErrorMsg: "success",
+		Data: pushData{
+			Type: "offer",
+			Sdp:  resp.Offer,
+		},
+	}
+	b, _ := json.Marshal(httpResp)
+	cr.Logger.AddNotice("resp", string(b))
+	w.Write(b)
 
 }
