@@ -3,3 +3,5 @@ xrtcserver/rtcserver/build/
 xrtcserver/rtcserver/.log/
 signaling/log/
 xrtcserver/rtcserver/.clang-format
+signaling/certification/
+
