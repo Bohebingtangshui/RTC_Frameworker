@@ -105,7 +105,7 @@ namespace xrtc {
             RTC_LOG(LS_WARNING)<<"rtc server already start";
             return false;
         }
-        thread_=new std::thread([=](){
+        thread_=new std::thread([=, this](){
             RTC_LOG(LS_INFO)<<"rtc server event loop start";
             event_loop_->start();
             RTC_LOG(LS_INFO)<<"rtc server event loop stop";

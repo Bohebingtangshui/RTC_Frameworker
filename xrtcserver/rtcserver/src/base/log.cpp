@@ -87,11 +87,11 @@ bool xrtc::XrtcLog::start_log_thread(){
     }
 
     _log_thread_running = true;
-    _log_thread = new std::thread([=](){
+    _log_thread = new std::thread([=, this](){
         struct stat st;
         std::stringstream ss;
         while(_log_thread_running){
-            if(stat(log_out_file.c_str(), &st)<0){
+            if(stat(log_out_file.c_str(), &st)<0){   // 一般来说是文件不存在
                 _out_file.close();
                 _out_file.open(log_out_file, std::ios::app);
             }

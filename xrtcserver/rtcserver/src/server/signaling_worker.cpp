@@ -16,8 +16,13 @@
 
 extern xrtc::RtcServer* g_rtc_server;
 namespace xrtc {
+
+void conn_io_cb(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int events, void* data);
+void conn_timer_cb(EventLoop* el, Timewatcher* /*watcher*/, void* data);
+
 SignalingWorker::SignalingWorker(int worker_id, const signaling_server_conf& options)
     : worker_id_(worker_id), _options(options), event_loop_(new EventLoop(this)) {}
+//  SignalingWorker 构造函数
 
 SignalingWorker::~SignalingWorker() {
     for (auto conn : conns_) {
@@ -50,10 +55,10 @@ void signaling_worker_recv_notify(EventLoop* /*el*/,
     RTC_LOG(LS_INFO) << "recv notify msg:" << msg;
     SignalingWorker* signaling_worker = static_cast<SignalingWorker*>(data);
     signaling_worker->process_notify(msg);
-}
+}   // 回调函数，被创建的event_loop 持有，从管道中读取信息，使用process_notify处理信息
 
 int SignalingWorker::init() {
-    int fds[2];
+    int fds[2];  // 每个worker都拥有一个通信管道
     if (pipe(fds) < 0) {
         RTC_LOG(LS_WARNING) << "create pipe failed" << strerror(errno) << errno;
         return -1;
@@ -63,20 +68,20 @@ int SignalingWorker::init() {
     pipe_watcher_   = event_loop_->creat_io_event(signaling_worker_recv_notify, this);
     event_loop_->start_io_event(pipe_watcher_, notify_recv_fd_, EventLoop::READ);
     return 0;
-}
+}  // 初始化新的worker
 
 bool SignalingWorker::start() {
     if (thread_) {
         RTC_LOG(LS_WARNING) << "signaling worker is already running" << worker_id_;
         return false;
     }
-    thread_ = new std::thread([=]() {
+    thread_ = new std::thread([=, this]() {
         RTC_LOG(LS_INFO) << "signaling worker start, worker id:" << worker_id_;
         event_loop_->start();
         RTC_LOG(LS_INFO) << "signaling worker stop, worker id:" << worker_id_;
     });
     return true;
-}
+} // 启动SignalingWorker线程
 
 void SignalingWorker::stop() {
     notify(SignalingWorker::QUIT);
@@ -85,7 +90,7 @@ void SignalingWorker::stop() {
 int SignalingWorker::notify(int msg) {
     int written = write(notify_send_fd_, &msg, sizeof(int));
     return written == sizeof(msg) ? 0 : -1;
-}
+}  // 将新的通知事件写入管道中 
 
 void SignalingWorker::process_notify(int msg) {
     switch (msg) {
@@ -97,7 +102,7 @@ void SignalingWorker::process_notify(int msg) {
             int fd;
             if (q_conn_.consume(&fd)) {
                 new_conn(fd);
-            }
+            } // 从无锁队列中拿出fd，然后建立新的连接
             break;
         case RTC_MSG:
             _process_rtc_msg();
@@ -106,7 +111,7 @@ void SignalingWorker::process_notify(int msg) {
             RTC_LOG(LS_WARNING) << "unknow notify msg:" << msg;
             break;
     }
-}
+}  // 在回调函数中被调用，用来处理新的msg
 
 
 void SignalingWorker::_stop() {
@@ -120,7 +125,7 @@ void SignalingWorker::_stop() {
 
     close(notify_recv_fd_);
     close(notify_send_fd_);
-}
+} // 停止SignalingWorker线程
 
 void SignalingWorker::join() {
     if (thread_ && thread_->joinable()) {
@@ -131,9 +136,54 @@ void SignalingWorker::join() {
 int SignalingWorker::notify_new_conn(int fd) {
     q_conn_.produce(fd);
     return notify(SignalingWorker::NEW_CONN);
+}  // 拿到新的TCP连接后，放入无锁队列，然后通知新的事件有新的连接
+
+void SignalingWorker::new_conn(int fd) {
+    RTC_LOG(LS_INFO) << "new conn, worker id:" << worker_id_ << ", fd:" << fd;
+    if (fd < 0) {
+        RTC_LOG(LS_WARNING) << "invalid fd:" << fd;
+        return;
+    }
+
+    sock_set_nonblock(fd); // 设置非阻塞
+    sock_set_nodelay(fd);  // 禁用nagle算法
+
+    TcpConnection* conn = new TcpConnection(fd);
+    sock_peer_to_str(fd, conn->host_, conn->port_); // 从conn中获取ip和端口
+
+    conn->io_watcher_ = event_loop_->creat_io_event(conn_io_cb, this);
+    event_loop_->start_io_event(conn->io_watcher_, fd, EventLoop::READ);
+
+    conn->timer_watcher_ = event_loop_->creat_timer(conn_timer_cb, conn, 1);
+    event_loop_->start_timer(conn->timer_watcher_, 100000); // 100ms 检查是否超时
+
+    conn->last_interaction_time = event_loop_->now();
+
+    if ((size_t)fd >= conns_.size()) {
+        conns_.resize(fd * 2, nullptr);
+    }
+    conns_[fd] = conn;   // 将新的TCP连接放入conns_数组，以fd的数字作为下标
 }
 
-void SignalingWorker::read_query(int fd) {
+void conn_io_cb(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int events, void* data) {
+    SignalingWorker* worker = static_cast<SignalingWorker*>(data);
+    if (events & EventLoop::READ) {
+        worker->read_query(fd);
+    }
+    if (events & EventLoop::WRITE) {
+        worker->_write_reply(fd);
+    }
+
+    // 当为读事件或者写事件，分别调用对应的处理函数
+}
+
+void conn_timer_cb(EventLoop* el, Timewatcher* /*watcher*/, void* data) {
+    SignalingWorker* worker = (SignalingWorker*)el->owner();
+    TcpConnection*   conn   = (TcpConnection*)data;
+    worker->process_timeout(conn);
+}
+
+void SignalingWorker::read_query(int fd) {   // 读取缓冲区数据
     RTC_LOG(LS_INFO) << "signaling worker " << worker_id_ << " read query from fd:" << fd;
     if (fd < 0 || (size_t)fd >= conns_.size() || !conns_[fd]) {
         RTC_LOG(LS_WARNING) << "invalid fd:" << fd;
@@ -146,6 +196,7 @@ void SignalingWorker::read_query(int fd) {
 
     conn->querybuf = sdsMakeRoomFor(conn->querybuf, read_len);
     nread          = sock_read_data(fd, conn->querybuf + qb_len, read_len);
+// 因为conn->querybuf指向缓冲区头，而缓冲区中仍然可能有数据，即qb_len的数据，需要加上这个偏移量
     RTC_LOG(LS_INFO) << "sock read data, len: " << nread;
 
     conn->last_interaction_time = event_loop_->now();
@@ -160,9 +211,11 @@ void SignalingWorker::read_query(int fd) {
         return;
     } else if (nread > 0) {
         sdsIncrLen(conn->querybuf, nread);
+        // 当直接向 SDS 字符串的缓冲区追加数据时 SDS 字符串的长度元数据不会自动更新 需要手动更新长度 保持数据的一致性
     }
+
     RTC_LOG(LS_INFO) << "GOING TO PROCESS QUERY BUFFER";
-    int ret = process_query_buffer(conn);
+    int ret = process_query_buffer(conn);   // TODO EXPLAIN
     if (ret < 0) {
         RTC_LOG(LS_WARNING) << "process query buffer failed, fd:" << fd;
         // close_conn_(conn);
@@ -214,22 +267,8 @@ void SignalingWorker::close_conn_(TcpConnection* conn) {
     conns_[conn->fd_] = nullptr;
     delete conn;
 }
-void conn_io_cb(EventLoop* /*el*/, IOWatcher* /*watcher*/, int fd, int events, void* data) {
-    SignalingWorker* worker = static_cast<SignalingWorker*>(data);
-    if (events & EventLoop::READ) {
-        worker->read_query(fd);
-    }
-    if (events & EventLoop::WRITE) {
-        worker->_write_reply(fd);
-    }
-}
 
 
-void conn_timer_cb(EventLoop* el, Timewatcher* /*watcher*/, void* data) {
-    SignalingWorker* worker = (SignalingWorker*)el->owner();
-    TcpConnection*   conn   = (TcpConnection*)data;
-    worker->process_timeout(conn);
-}
 
 void SignalingWorker::process_timeout(TcpConnection* conn) {
     if (event_loop_->now() - conn->last_interaction_time >=
@@ -239,32 +278,7 @@ void SignalingWorker::process_timeout(TcpConnection* conn) {
     }
 }
 
-void SignalingWorker::new_conn(int fd) {
-    RTC_LOG(LS_INFO) << "new conn, worker id:" << worker_id_ << ", fd:" << fd;
-    if (fd < 0) {
-        RTC_LOG(LS_WARNING) << "invalid fd:" << fd;
-        return;
-    }
 
-    sock_set_nonblock(fd);
-    sock_set_nodelay(fd);
-
-    TcpConnection* conn = new TcpConnection(fd);
-    sock_peer_to_str(fd, conn->host_, conn->port_);
-
-    conn->io_watcher_ = event_loop_->creat_io_event(conn_io_cb, this);
-    event_loop_->start_io_event(conn->io_watcher_, fd, EventLoop::READ);
-
-    conn->timer_watcher_ = event_loop_->creat_timer(conn_timer_cb, conn, 1);
-    event_loop_->start_timer(conn->timer_watcher_, 100000); // 100ms
-
-    conn->last_interaction_time = event_loop_->now();
-
-    if ((size_t)fd >= conns_.size()) {
-        conns_.resize(fd * 2, nullptr);
-    }
-    conns_[fd] = conn;
-}
 
 int SignalingWorker::process_request_(TcpConnection*    conn,
                                       const rtc::Slice& header,
@@ -297,7 +311,7 @@ int SignalingWorker::process_request_(TcpConnection*    conn,
             return process_push_(cmdno, conn, root, xh->log_id);
     }
     return 0;
-}
+}  // 处理请求，解析JSON主题，提取命令编号，根据编号调用相应处理函数
 
 int SignalingWorker::process_push_(int                cmdno,
                                    TcpConnection*     conn,

@@ -9,9 +9,9 @@ int Load_Genaral_Conf(const std::string& conf_file, GeneralConf& conf) {
         return -1;
     }
 
-    YAML::Node config= YAML::LoadFile(conf_file);
     try
     {
+        YAML::Node config= YAML::LoadFile(conf_file);
         conf.log_dir = config["log"]["log_dir"].as<std::string>();
         conf.log_name = config["log"]["log_name"].as<std::string>();
         conf.log_level = config["log"]["log_level"].as<std::string>();
@@ -23,7 +23,7 @@ int Load_Genaral_Conf(const std::string& conf_file, GeneralConf& conf) {
         return -1;
     }
 
-    std::cout<<config<<std::endl;
+    // std::cout<<config<<std::endl;
     
     return 0;
 }

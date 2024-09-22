@@ -20,7 +20,7 @@ namespace xrtc
         std::atomic<int>size_;
 public:
         LockFreeQueue(){
-            head_=divider_=tail_=new Node(T());
+            head_=divider_=tail_=new Node(T{}); 
             size_=0;
         }
         ~LockFreeQueue(){

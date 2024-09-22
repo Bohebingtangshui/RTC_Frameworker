@@ -39,10 +39,10 @@ private:
 private:
     signaling_server_conf _options;
     EventLoop* event_loop_{nullptr};
-    IOWatcher* io_watcher_{nullptr};
+    IOWatcher* IO_conn_watcher_{nullptr};
     std::thread* _thread{nullptr};
 
-    IOWatcher* _pipe_watcher_{nullptr};
+    IOWatcher* IO_pipe_watcher_{nullptr};
     int _notify_recv_fd{-1};
     int _notify_send_fd{-1};
 

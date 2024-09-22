@@ -21,7 +21,7 @@ namespace xrtc {
         RTC_LOG(LS_INFO)<<"recv notify msg:"<<msg;
         SignalingServer* signaling_server = static_cast<SignalingServer*>(data);
         signaling_server->_process_notify(msg);
-    }
+    }  // 回调函数 当recv_fd中有数据读取时，从管道中读出，交给_process_notify处理
 
     void accept_new_conn(EventLoop * /*el*/, IOWatcher * /*watcher*/, int fd, int /*events*/, void * data)
     {
@@ -39,7 +39,7 @@ namespace xrtc {
 
         SignalingServer* signaling_server = static_cast<SignalingServer*>(data);
         signaling_server->dispatch_conn(cfd);
-    }
+    } // 回调函数 当fd有新的TCP连接时，记录客户端IP和端口，通过dispatch_conn分发给一个worker处理
 
 
 
@@ -102,9 +102,10 @@ namespace xrtc {
         }
         _notify_recv_fd = fds[0];
         _notify_send_fd = fds[1];
+
         //add recv fd to event loop
-        _pipe_watcher_ = event_loop_->creat_io_event(signaling_server_recv_notify, this);
-        event_loop_->start_io_event(_pipe_watcher_, _notify_recv_fd, EventLoop::READ);
+        IO_pipe_watcher_ = event_loop_->creat_io_event(signaling_server_recv_notify, this);
+        event_loop_->start_io_event(IO_pipe_watcher_, _notify_recv_fd, EventLoop::READ);
 
         _listen_fd = create_tcp_server(_options.host, _options.port);
         if(_listen_fd < 0)
@@ -112,8 +113,8 @@ namespace xrtc {
             RTC_LOG(LS_WARNING)<<"create tcp server failed";
             return -1;
         }
-        io_watcher_ = event_loop_->creat_io_event(accept_new_conn,this);
-        event_loop_->start_io_event(io_watcher_, _listen_fd, EventLoop::READ);
+        IO_conn_watcher_ = event_loop_->creat_io_event(accept_new_conn,this);
+        event_loop_->start_io_event(IO_conn_watcher_, _listen_fd, EventLoop::READ);
 
         // create worker
         for(int i = 0; i < _options.worker_num; ++i)
@@ -125,7 +126,25 @@ namespace xrtc {
         }
 
         return 0;
-    }
+    } // 初始化signaling 服务器
+
+    int SignalingServer::create_worker(int worker_id)
+    {
+        RTC_LOG(LS_INFO)<<"signaling server create worker:"<<worker_id;
+        SignalingWorker* worker = new SignalingWorker(worker_id,_options);
+        if(worker->init() != 0)
+        {
+            RTC_LOG(LS_WARNING)<<"worker init failed";
+            return -1;
+        }
+        if(!worker->start())
+        {
+            RTC_LOG(LS_WARNING)<<"worker start failed";
+            return -1;
+        }
+        workers_.emplace_back(worker);
+        return 0;
+    }  // 创建worker并添加到workers数组
 
     bool SignalingServer::start()
     {
@@ -135,18 +154,18 @@ namespace xrtc {
         }
 
 
-        _thread = new std::thread([=](){
+        _thread = new std::thread([=, this](){
             RTC_LOG(LS_INFO)<<"signaling server event loop run";
             event_loop_->start();
             RTC_LOG(LS_INFO)<<"signaling server event loop stop";
         });
         return true;
-    }
+    }  // 启动SignalingServer线程
 
     void  SignalingServer::stop()
     {
         notify(SignalingServer::QUIT);
-    }
+    }  // 关闭SignalingServer线程
 
     int SignalingServer::notify(int msg)
     {
@@ -182,17 +201,18 @@ namespace xrtc {
             RTC_LOG(LS_WARNING)<<"signaling server is not running";
             return;
         }
-        event_loop_->delete_io_event(_pipe_watcher_);
-        RTC_LOG(LS_INFO)<<"signaling server delete_io_event";
-        event_loop_->delete_io_event(io_watcher_);
-        RTC_LOG(LS_INFO)<<"signaling server delete_io_event";
+        event_loop_->delete_io_event(IO_pipe_watcher_);
+        RTC_LOG(LS_INFO)<<"signaling server delete IO_pipe_watcher_";
+
+        event_loop_->delete_io_event(IO_conn_watcher_);
+        RTC_LOG(LS_INFO)<<"signaling server delete IO_conn_watcher_";
+
         event_loop_->stop();
         RTC_LOG(LS_INFO)<<"signaling server stop";
+
         close(_notify_recv_fd);
         close(_notify_send_fd);
         close(_listen_fd);
-
-        RTC_LOG(LS_INFO)<<"signaling server stop";
 
         for(auto worker : workers_)
         {
@@ -204,23 +224,7 @@ namespace xrtc {
         }
     }
 
-    int SignalingServer::create_worker(int worker_id)
-    {
-        RTC_LOG(LS_INFO)<<"signaling server create worker:"<<worker_id;
-        SignalingWorker* worker = new SignalingWorker(worker_id,_options);
-        if(worker->init() != 0)
-        {
-            RTC_LOG(LS_WARNING)<<"worker init failed";
-            return -1;
-        }
-        if(!worker->start())
-        {
-            RTC_LOG(LS_WARNING)<<"worker start failed";
-            return -1;
-        }
-        workers_.emplace_back(worker);
-        return 0;
-    }
+
 
     void SignalingServer::join()
     {
@@ -244,6 +248,6 @@ namespace xrtc {
         }
         SignalingWorker* worker = workers_[index];
         worker->notify_new_conn(fd);       
-    } 
+    }  // 分发新的tcp连接给一个worker
 
 }
